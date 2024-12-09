@@ -1,7 +1,65 @@
 <!DOCTYPE html>
-<html>
-<h1>Hello and welcome to DevinDaboiCorp!</h1>
-<p>log in to access stuff</p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Example</title>
+    <style>
+        #hiddenContent {
+            display: none; /* Hide the content by default */
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Login to access content</h2>
+
+    <!-- Login Form -->
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+        <br>
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Hidden Content -->
+    <div id="hiddenContent">
+        <h3>Welcome, you're logged in!</h3>
+        <p>This content is only visible after you log in with correct credentials.</p>
+    </div>
+
+    <p id="errorMessage" style="color: red; display: none;">Invalid username or password!</p>
+
+    <script>
+        // Hardcoded list of usernames and passwords
+        const users = {
+            "user1": "password1",
+            "user2": "password2",
+            "user3": "password3"
+        };
+
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent page reload on form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Check if the username and password match any entry in the users list
+            if (users[username] && users[username] === password) {
+                // Show hidden content
+                document.getElementById('hiddenContent').style.display = 'block';
+                errorMessage.style.display = 'none'; // Hide error message
+            } else {
+                // Show error message
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
 
 </body>
 </html>
