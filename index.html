@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>DevinDaboiCorp</title>
     <style>
         #hiddenContent {
             display: none; /* Hide the content by default */
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-    <h2>Welcome to DevinDaboiCorp! log in to access the site</h2>
+    <h2>Welcome to DevinDaboiCorp! Log in to access the site</h2>
 
     <!-- Login Form -->
     <form id="loginForm">
@@ -37,7 +37,7 @@
         // Hardcoded list of usernames and passwords
         const users = {
             "DevinDaboi": "IEAT31415",
-            "user2": "password2",
+            "Caspianoregiano": "JesusIsLord",
             "user3": "password3"
         };
 
@@ -51,9 +51,14 @@
 
             // Check if the username and password match any entry in the users list
             if (users[username] && users[username] === password) {
+                // Hide the login form
+                document.getElementById('loginForm').style.display = 'none';
+
                 // Show hidden content
                 document.getElementById('hiddenContent').style.display = 'block';
-                errorMessage.style.display = 'none'; // Hide error message
+
+                // Hide error message if displayed
+                errorMessage.style.display = 'none';
             } else {
                 // Show error message
                 errorMessage.style.display = 'block';
