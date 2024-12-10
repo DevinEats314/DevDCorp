@@ -26,6 +26,13 @@
             width: 100%;
         }
 
+        #hiddenContent {
+            display: none;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Chat Section */
         #messages {
             width: 50%;
             max-width: 500px;
@@ -36,6 +43,8 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column-reverse;
         }
 
         .message {
@@ -64,7 +73,7 @@
             color: white;
         }
 
-        /* Soundboard styles */
+        /* Soundboard Section */
         .soundboard {
             display: grid;
             grid-template-columns: repeat(4, 150px);
@@ -94,6 +103,22 @@
             display: none;
         }
 
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .chat-section {
+            flex-grow: 1;
+        }
+
+        .soundboard-section {
+            margin-left: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -113,33 +138,40 @@
 
     <p id="errorMessage">Invalid username or password!</p>
 
-    <!-- Hidden Content -->
-    <div id="hiddenContent" style="display:none;">
+    <!-- Hidden Content (Visible after login) -->
+    <div id="hiddenContent">
         <h3>Enjoy your stay!</h3>
 
-        <!-- Group Chat -->
-        <div id="messages"></div>
+        <div class="container">
+            <!-- Chat Section -->
+            <div class="chat-section">
+                <div id="messages"></div>
 
-        <input type="text" id="usernameInput" placeholder="Enter your username">
-        <input type="text" id="messageInput" placeholder="Type your message">
-        <button onclick="sendMessage()">Send</button>
+                <input type="text" id="usernameInput" placeholder="Enter your username">
+                <input type="text" id="messageInput" placeholder="Type your message">
+                <button onclick="sendMessage()">Send</button>
+            </div>
 
-        <!-- Soundboard -->
-        <div class="soundboard">
-            <button class="sound-button" onclick="playSound('sound1.mp3')">Vine Boom</button>
-            <button class="sound-button" onclick="playSound('sound2.mp3')">Taco Bell</button>
-            <button class="sound-button" onclick="playSound('sound3.mp3')">Metal Pipe</button>
-            <button class="sound-button" onclick="playSound('sound4.mp3')">Bruh</button>
-            <button class="sound-button" onclick="playSound('sound5.mp3')">GET OUT</button>
-            <button class="sound-button" onclick="playSound('sound6.mp3')">Waterphone</button>
-            <button class="sound-button" onclick="playSound('sound7.mp3')">Alarm</button>
-            <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb Fart</button>
+            <!-- Soundboard Section -->
+            <div class="soundboard-section">
+                <div class="soundboard">
+                    <button class="sound-button" onclick="playSound('sound1.mp3')">Vine Boom</button>
+                    <button class="sound-button" onclick="playSound('sound2.mp3')">Taco Bell</button>
+                    <button class="sound-button" onclick="playSound('sound3.mp3')">Metal Pipe</button>
+                    <button class="sound-button" onclick="playSound('sound4.mp3')">Bruh</button>
+                    <button class="sound-button" onclick="playSound('sound5.mp3')">GET OUT</button>
+                    <button class="sound-button" onclick="playSound('sound6.mp3')">Waterphone</button>
+                    <button class="sound-button" onclick="playSound('sound7.mp3')">Alarm</button>
+                    <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb Fart</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
+        // Your web app's Firebase configuration
         var firebaseConfig = {
             apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
             authDomain: "groupchat-5a13b.firebaseapp.com",
@@ -183,6 +215,14 @@
             }
         });
 
+        // Set up Notification permission
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+
+        // Track timestamp to avoid notifications on page refresh
+        var lastMessageTimestamp = 0;
+
         function sendMessage() {
             const messageText = messageInput.value.trim();
             const username = usernameInput.value.trim();
@@ -201,8 +241,6 @@
             }
         }
 
-        var lastMessageTimestamp = 0; // Variable to store the timestamp of the last message
-
         var messagesRef = database.ref('messages');
         messagesRef.on('child_added', function(snapshot) {
             const message = snapshot.val();
@@ -211,13 +249,13 @@
             messageElement.textContent = message.username + ": " + message.text;
             messagesDiv.appendChild(messageElement);
 
-            // Scroll to bottom
+            // Scroll to bottom on new message
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-            // Only show notification if the message is new and after the last message timestamp
+            // Trigger notification only for new messages after page load
             if (message.timestamp > lastMessageTimestamp) {
                 new Notification('New message', { body: message.username + ": " + message.text });
-                lastMessageTimestamp = message.timestamp;
+                lastMessageTimestamp = message.timestamp; // Update timestamp to prevent spamming
             }
         });
 
@@ -225,11 +263,6 @@
         function playSound(soundFile) {
             const audio = new Audio(soundFile);
             audio.play();
-        }
-
-        // Request permission for notifications
-        if (Notification.permission !== "granted") {
-            Notification.requestPermission();
         }
     </script>
 
