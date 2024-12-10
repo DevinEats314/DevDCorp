@@ -228,8 +228,14 @@
             Notification.requestPermission();
         }
 
-        // Track timestamp to avoid notifications on page refresh
-        var lastMessageTimestamp = 0;
+        // Fetch last message timestamp from Firebase to prevent spamming notifications on refresh
+        let lastMessageTimestamp = 0;
+        const lastTimestampRef = database.ref('lastMessageTimestamp');
+        lastTimestampRef.once('value', function(snapshot) {
+            if (snapshot.exists()) {
+                lastMessageTimestamp = snapshot.val();
+            }
+        });
 
         function sendMessage() {
             const messageText = messageInput.value.trim();
@@ -238,11 +244,16 @@
             if (messageText && username) {
                 var messageRef = database.ref('messages');
                 var newMessageRef = messageRef.push();
+                var timestamp = Date.now();
+                
                 newMessageRef.set({
                     username: username,
                     text: messageText,
-                    timestamp: Date.now(),
+                    timestamp: timestamp,
                 });
+
+                // Update lastMessageTimestamp in a separate part of the database
+                lastTimestampRef.set(timestamp);
 
                 messageInput.value = '';
             } else {
