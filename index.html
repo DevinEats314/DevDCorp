@@ -284,4 +284,25 @@
             const timeDiff = (currentTimestamp - messageTimestamp) / 1000; // Difference in seconds
 
             // Show a notification only if the message was posted within the last second
-            if (Notification.permission === "granted" &&
+            if (Notification.permission === "granted" && timeDiff <= 1) {
+                const notification = new Notification("New Message in Group Chat", {
+                    body: message.username + ": " + message.text,
+                    icon: "https://www.example.com/icon.png",  // Optional: replace with your custom icon URL
+                });
+            }
+        });
+
+        // Function to scroll to the bottom
+        function scrollToBottom() {
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function playSound(soundFile) {
+            const audio = new Audio(soundFile);
+            audio.play();
+        }
+
+        console.log("Script loaded successfully!"); // Debugging
+    </script>
+</body>
+</html>
