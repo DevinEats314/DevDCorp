@@ -34,7 +34,7 @@
 
         /* Chat Section */
         #messages {
-            width: 60%;
+            width: 100%;
             max-width: 500px;
             height: 70vh;
             overflow-y: auto;
@@ -105,18 +105,20 @@
 
         .container {
             display: flex;
-            flex-direction: column; /* Stack the chat and soundboard sections vertically */
+            flex-direction: row; /* Stack the chat and soundboard sections horizontally */
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             width: 100%;
+            margin-top: 20px;
         }
 
         .chat-section {
-            margin-bottom: 30px; /* Add space between the sections */
+            flex: 1;
+            margin-right: 20px; /* Add some space between chat and soundboard */
         }
 
         .soundboard-section {
-            margin-top: 20px;
+            flex: 1;
         }
 
         label {
