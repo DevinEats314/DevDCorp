@@ -14,8 +14,8 @@
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: row;
-            align-items: flex-start;
+            flex-direction: column;
+            align-items: center;
             height: 100vh;
             background-color: #f4f4f4;
         }
@@ -26,8 +26,13 @@
             margin-top: 20px;
         }
 
+        #loginForm {
+            text-align: center;
+            width: 100%;
+        }
+
         #messages {
-            width: 50%; /* Reduced width */
+            width: 50%; /* Adjusted width */
             max-width: 500px; /* Smaller max-width */
             height: 70vh;
             overflow-y: scroll;
@@ -65,12 +70,14 @@
         }
 
         .soundboard {
-            display: grid;
-            grid-template-columns: repeat(4, 120px); /* Smaller buttons */
-            grid-gap: 10px;
-            justify-items: center;
-            margin-left: 20px;
-            align-self: flex-start;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin-top: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+            justify-content: center;
         }
 
         .sound-button {
@@ -83,10 +90,16 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin: 10px;
         }
 
         .sound-button:hover {
             background-color: #45a049;
+        }
+
+        #errorMessage {
+            color: red;
+            display: none;
         }
     </style>
 </head>
@@ -98,7 +111,7 @@
     </div>
 
     <!-- Login Form -->
-    <form id="loginForm" style="text-align: center; width: 100%;">
+    <form id="loginForm">
         <label for="username">Username:</label>
         <input type="text" id="username" required>
         <br>
@@ -135,10 +148,9 @@
             <button class="sound-button" onclick="playSound('sound7.mp3')">Alarm</button>
             <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb fart</button>
         </div>
-
     </div>
 
-    <p id="errorMessage" style="color: red; display: none;">Invalid username or password!</p>
+    <p id="errorMessage">Invalid username or password!</p>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -165,18 +177,14 @@
         const messageInput = document.getElementById('messageInput');
         const usernameInput = document.getElementById('usernameInput');
         const errorMessage = document.getElementById('errorMessage');
-
-        let currentUser = "";  // This will store the username of the logged-in user
+        let currentUser = "";
 
         // Function to send message
         function sendMessage() {
             const messageText = messageInput.value.trim();
             const username = usernameInput.value.trim();
-
-            // Set currentUser when the user logs in
             currentUser = username;
 
-            // Check if both username and message are filled
             if (messageText && username) {
                 var messageRef = database.ref('messages');
                 messageRef.push({
@@ -185,8 +193,7 @@
                     timestamp: Date.now(),
                 });
 
-                // Clear input fields after sending
-                messageInput.value = '';
+                messageInput.value = ''; // Clear input
             } else {
                 alert("Please enter both a username and a message.");
             }
@@ -204,11 +211,11 @@
             // Scroll to the bottom to show the latest message when a new one is added
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-            // Only notify if the message is from another user (not the current user)
+            // Notify only if it's a new message from someone else (not the current user)
             if (Notification.permission === "granted" && message.username !== currentUser) {
                 new Notification("New Message", {
                     body: message.username + ": " + message.text,
-                    icon: "icon.png"  // Optional: Add an icon for the notification
+                    icon: "icon.png" // Optional: Add an icon for the notification
                 });
             }
         });
@@ -222,7 +229,7 @@
             });
         }
 
-        // Handle form submission for login
+        // Handle login form submission
         const users = {
             "DevinDaboi": "IEAT31415",
             "Caspianoregiano": "JesusIsLord",
@@ -231,26 +238,17 @@
         };
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent page reload on form submission
+            event.preventDefault();
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Check if the username and password match any entry in the users list
             if (users[username] && users[username] === password) {
-                // Hide the login form
                 document.getElementById('loginForm').style.display = 'none';
-
-                // Show hidden content
                 document.getElementById('hiddenContent').style.display = 'block';
-
-                // Hide error message if displayed
                 errorMessage.style.display = 'none';
-
-                // Set currentUser to the logged-in user
-                currentUser = username;
+                currentUser = username; // Set the current user
             } else {
-                // Show error message
                 errorMessage.style.display = 'block';
             }
         });
@@ -261,7 +259,7 @@
             audio.play();
         }
 
-        // Scroll the chat box to the bottom on page load
+        // Scroll the chat box to the bottom when page loads
         window.onload = function() {
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         };
