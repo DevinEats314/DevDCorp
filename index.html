@@ -228,15 +228,6 @@
             Notification.requestPermission();
         }
 
-        // Fetch last message timestamp from Firebase to prevent spamming notifications on refresh
-        let lastMessageTimestamp = 0;
-        const lastTimestampRef = database.ref('lastMessageTimestamp');
-        lastTimestampRef.once('value', function(snapshot) {
-            if (snapshot.exists()) {
-                lastMessageTimestamp = snapshot.val();
-            }
-        });
-
         function sendMessage() {
             const messageText = messageInput.value.trim();
             const username = usernameInput.value.trim();
@@ -244,16 +235,15 @@
             if (messageText && username) {
                 var messageRef = database.ref('messages');
                 var newMessageRef = messageRef.push();
-                var timestamp = Date.now();
+                
+                // Get current date and time in readable format
+                var timestamp = new Date().toLocaleString();  // Format: "MM/DD/YYYY, HH:mm:ss"
                 
                 newMessageRef.set({
                     username: username,
                     text: messageText,
-                    timestamp: timestamp,
+                    timestamp: timestamp
                 });
-
-                // Update lastMessageTimestamp in a separate part of the database
-                lastTimestampRef.set(timestamp);
 
                 messageInput.value = '';
             } else {
@@ -266,19 +256,10 @@
             const message = snapshot.val();
             const messageElement = document.createElement('div');
             messageElement.classList.add('message');
-            messageElement.textContent = message.username + ": " + message.text;
+            messageElement.textContent = message.username + ": " + message.text + " (" + message.timestamp + ")";
             messagesDiv.appendChild(messageElement);
 
-            // Only notify for newer messages (not already shown)
-            if (message.timestamp > lastMessageTimestamp) {
-                if (Notification.permission === "granted") {
-                    new Notification("New message from " + message.username, {
-                        body: message.text
-                    });
-                }
-                lastMessageTimestamp = message.timestamp;
-            }
-
+            // Scroll to the bottom after the message is added
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
 
