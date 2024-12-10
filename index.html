@@ -20,6 +20,12 @@
             background-color: #f4f4f4;
         }
 
+        #welcomeMessage {
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
         #messages {
             width: 60%;
             max-width: 600px;
@@ -88,10 +94,13 @@
 </head>
 <body>
 
-    <h2>Welcome to DevinDaboiCorp!</h2>
+    <!-- Welcome Message at the Top -->
+    <div id="welcomeMessage">
+        <h2>Welcome to DevinDaboiCorp!</h2>
+    </div>
 
     <!-- Login Form -->
-    <form id="loginForm">
+    <form id="loginForm" style="text-align: center; width: 100%;">
         <label for="username">Username:</label>
         <input type="text" id="username" required>
         <br>
