@@ -14,8 +14,8 @@
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-direction: row;
+            align-items: flex-start;
             height: 100vh;
             background-color: #f4f4f4;
         }
@@ -64,6 +64,9 @@
             grid-gap: 10px;
             justify-items: center;
             margin-left: 20px;
+            position: sticky;
+            top: 20px; /* Keep it at the top right of the screen */
+            align-self: flex-start;
         }
 
         .sound-button {
@@ -191,10 +194,10 @@
             messageElement.textContent = message.username + ": " + message.text;
             messagesDiv.appendChild(messageElement);
 
-            // Scroll to the bottom to show the latest message
+            // Scroll to the bottom to show the latest message when a new one is added
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-            // Only notify if the message is from another user
+            // Only notify if the message is from another user (not the current user)
             if (Notification.permission === "granted" && message.username !== currentUser) {
                 new Notification("New Message", {
                     body: message.username + ": " + message.text,
@@ -250,6 +253,11 @@
             const audio = new Audio(soundFile);
             audio.play();
         }
+
+        // Scroll the chat box to the bottom on page load
+        window.onload = function() {
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
     </script>
 
 </body>
