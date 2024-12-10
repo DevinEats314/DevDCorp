@@ -105,23 +105,27 @@
 
         .container {
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-start;
+            flex-direction: column; /* Stack the chat and soundboard sections vertically */
+            justify-content: center;
+            align-items: center;
             width: 100%;
         }
 
         .chat-section {
-            flex-grow: 1;
+            margin-bottom: 30px; /* Add space between the sections */
         }
 
         .soundboard-section {
-            margin-left: 20px;
+            margin-top: 20px;
         }
 
         label {
             font-size: 16px;
             margin-top: 10px;
+        }
+
+        h1 {
+            text-align: center;
         }
 
     </style>
@@ -149,9 +153,9 @@
 
         <div class="container">
             <!-- Chat Section -->
-            <h1>Group Chat</h1>
-            <p>use your real name, identity theft is a felony</p>
             <div class="chat-section">
+                <h1>Group Chat</h1>
+                <p>use your real name, identity theft is a felony</p>
                 <div id="messages"></div>
 
                 <label for="usernameInput">username:</label>
@@ -163,8 +167,8 @@
             </div>
 
             <!-- Soundboard Section -->
-            <h1>Soundboard</h1>
             <div class="soundboard-section">
+                <h1>Soundboard</h1>
                 <div class="soundboard">
                     <button class="sound-button" onclick="playSound('sound1.mp3')">Vine Boom</button>
                     <button class="sound-button" onclick="playSound('sound2.mp3')">Taco Bell</button>
