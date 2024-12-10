@@ -237,7 +237,8 @@
 
             if (messageText && username) {
                 var messageRef = database.ref('messages');
-                messageRef.push({
+                var newMessageRef = messageRef.push();
+                newMessageRef.set({
                     username: username,
                     text: messageText,
                     timestamp: Date.now(),
@@ -257,8 +258,8 @@
             messageElement.textContent = message.username + ": " + message.text;
             messagesDiv.appendChild(messageElement);
 
+            // Only notify for newer messages (not already shown)
             if (message.timestamp > lastMessageTimestamp) {
-                // Notify only on new messages
                 if (Notification.permission === "granted") {
                     new Notification("New message from " + message.username, {
                         body: message.text
