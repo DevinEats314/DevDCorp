@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevinDaboiCorp</title>
     <style>
-        #hiddenContent {
-            display: none; /* Hide the content by default */
-        }
-
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -16,7 +12,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
             background-color: #f4f4f4;
         }
 
@@ -32,10 +27,10 @@
         }
 
         #messages {
-            width: 50%; /* Adjusted width */
-            max-width: 500px; /* Smaller max-width */
+            width: 50%;
+            max-width: 500px;
             height: 70vh;
-            overflow-y: scroll;
+            overflow-y: auto;
             margin-top: 20px;
             padding: 10px;
             background-color: #fff;
@@ -69,20 +64,18 @@
             color: white;
         }
 
+        /* Soundboard styles */
         .soundboard {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            margin-top: 20px;
-            padding: 20px;
-            width: 100%;
-            max-width: 800px;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(4, 150px);
+            grid-gap: 10px;
+            justify-items: center;
+            margin-top: 30px;
         }
 
         .sound-button {
-            padding: 15px;
-            font-size: 14px;
+            padding: 20px;
+            font-size: 16px;
             text-align: center;
             background-color: #4CAF50;
             color: white;
@@ -90,7 +83,6 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            margin: 10px;
         }
 
         .sound-button:hover {
@@ -101,14 +93,12 @@
             color: red;
             display: none;
         }
+
     </style>
 </head>
 <body>
 
-    <!-- Welcome Message at the Top -->
-    <div id="welcomeMessage">
-        <h2>Welcome to DevinDaboiCorp!</h2>
-    </div>
+    <h2 id="welcomeMessage">Welcome to DevinDaboiCorp!</h2>
 
     <!-- Login Form -->
     <form id="loginForm">
@@ -121,42 +111,35 @@
         <button type="submit">Login</button>
     </form>
 
+    <p id="errorMessage">Invalid username or password!</p>
+
     <!-- Hidden Content -->
-    <div id="hiddenContent">
+    <div id="hiddenContent" style="display:none;">
         <h3>Enjoy your stay!</h3>
 
         <!-- Group Chat -->
-        <h1>Group Chat</h1>
-        <h4>Put your real name, identity theft is a felony</h4>
-
-        <input type="text" id="usernameInput" placeholder="Enter your username">
-
         <div id="messages"></div>
 
+        <input type="text" id="usernameInput" placeholder="Enter your username">
         <input type="text" id="messageInput" placeholder="Type your message">
         <button onclick="sendMessage()">Send</button>
 
         <!-- Soundboard -->
-        <h1>Soundboard</h1>
         <div class="soundboard">
-            <button class="sound-button" onclick="playSound('sound1.mp3')">Vine boom</button>
-            <button class="sound-button" onclick="playSound('sound2.mp3')">Taco bell</button>
+            <button class="sound-button" onclick="playSound('sound1.mp3')">Vine Boom</button>
+            <button class="sound-button" onclick="playSound('sound2.mp3')">Taco Bell</button>
             <button class="sound-button" onclick="playSound('sound3.mp3')">Metal Pipe</button>
             <button class="sound-button" onclick="playSound('sound4.mp3')">Bruh</button>
             <button class="sound-button" onclick="playSound('sound5.mp3')">GET OUT</button>
             <button class="sound-button" onclick="playSound('sound6.mp3')">Waterphone</button>
             <button class="sound-button" onclick="playSound('sound7.mp3')">Alarm</button>
-            <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb fart</button>
+            <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb Fart</button>
         </div>
     </div>
 
-    <p id="errorMessage">Invalid username or password!</p>
-
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
     <script>
-        // Firebase configuration
         var firebaseConfig = {
             apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
             authDomain: "groupchat-5a13b.firebaseapp.com",
@@ -168,7 +151,6 @@
             measurementId: "G-SHC0GXX7MH"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         var database = firebase.database();
 
@@ -177,13 +159,33 @@
         const messageInput = document.getElementById('messageInput');
         const usernameInput = document.getElementById('usernameInput');
         const errorMessage = document.getElementById('errorMessage');
-        let currentUser = "";
+        const loginForm = document.getElementById('loginForm');
+        const hiddenContent = document.getElementById('hiddenContent');
 
-        // Function to send message
+        const users = {
+            "DevinDaboi": "IEAT31415",
+            "Caspianoregiano": "JesusIsLord",
+            "migueel": "tacobell1",
+            "user3": "password3"
+        };
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (users[username] && users[username] === password) {
+                loginForm.style.display = 'none';
+                hiddenContent.style.display = 'block';
+                errorMessage.style.display = 'none';
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        });
+
         function sendMessage() {
             const messageText = messageInput.value.trim();
             const username = usernameInput.value.trim();
-            currentUser = username;
 
             if (messageText && username) {
                 var messageRef = database.ref('messages');
@@ -193,13 +195,14 @@
                     timestamp: Date.now(),
                 });
 
-                messageInput.value = ''; // Clear input
+                messageInput.value = '';
             } else {
                 alert("Please enter both a username and a message.");
             }
         }
 
-        // Listen for new messages
+        var lastMessageTimestamp = 0; // Variable to store the timestamp of the last message
+
         var messagesRef = database.ref('messages');
         messagesRef.on('child_added', function(snapshot) {
             const message = snapshot.val();
@@ -208,61 +211,26 @@
             messageElement.textContent = message.username + ": " + message.text;
             messagesDiv.appendChild(messageElement);
 
-            // Scroll to the bottom to show the latest message when a new one is added
+            // Scroll to bottom
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-            // Notify only if it's a new message from someone else (not the current user)
-            if (Notification.permission === "granted" && message.username !== currentUser) {
-                new Notification("New Message", {
-                    body: message.username + ": " + message.text,
-                    icon: "icon.png" // Optional: Add an icon for the notification
-                });
+            // Only show notification if the message is new and after the last message timestamp
+            if (message.timestamp > lastMessageTimestamp) {
+                new Notification('New message', { body: message.username + ": " + message.text });
+                lastMessageTimestamp = message.timestamp;
             }
         });
 
-        // Request notification permission
-        if (Notification.permission !== "denied") {
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
-                    console.log("Notification permission granted.");
-                }
-            });
-        }
-
-        // Handle login form submission
-        const users = {
-            "DevinDaboi": "IEAT31415",
-            "Caspianoregiano": "JesusIsLord",
-            "migueel": "tacobell1",
-            "user3": "password3"
-        };
-
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            if (users[username] && users[username] === password) {
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('hiddenContent').style.display = 'block';
-                errorMessage.style.display = 'none';
-                currentUser = username; // Set the current user
-            } else {
-                errorMessage.style.display = 'block';
-            }
-        });
-
-        // Soundboard functionality
+        // Play sound
         function playSound(soundFile) {
             const audio = new Audio(soundFile);
             audio.play();
         }
 
-        // Scroll the chat box to the bottom when page loads
-        window.onload = function() {
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        };
+        // Request permission for notifications
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
     </script>
 
 </body>
