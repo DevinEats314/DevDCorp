@@ -249,22 +249,23 @@
             messageElement.textContent = message.username + ": " + message.text;
             messagesDiv.appendChild(messageElement);
 
-            // Scroll to bottom on new message
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-            // Trigger notification only for new messages after page load
             if (message.timestamp > lastMessageTimestamp) {
-                new Notification('New message', { body: message.username + ": " + message.text });
-                lastMessageTimestamp = message.timestamp; // Update timestamp to prevent spamming
+                // Notify only on new messages
+                if (Notification.permission === "granted") {
+                    new Notification("New message from " + message.username, {
+                        body: message.text
+                    });
+                }
+                lastMessageTimestamp = message.timestamp;
             }
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
 
-        // Play sound
         function playSound(soundFile) {
             const audio = new Audio(soundFile);
             audio.play();
         }
     </script>
-
 </body>
 </html>
