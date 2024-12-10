@@ -15,6 +15,7 @@
             justify-content: space-between;
             padding: 20px;
             height: 100vh;
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
         }
 
         /* Group chat styles */
@@ -27,6 +28,7 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         #messages {
@@ -73,13 +75,15 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         .soundboard {
             display: grid;
-            grid-template-columns: repeat(4, 150px);
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Auto-fill columns */
             grid-gap: 10px;
             justify-items: center;
+            max-width: 100%; /* Ensure it doesn't overflow */
         }
 
         .sound-button {
@@ -92,6 +96,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            width: 100%; /* Make buttons responsive */
         }
 
         .sound-button:hover {
