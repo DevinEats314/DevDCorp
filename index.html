@@ -183,13 +183,18 @@
 
                         // Check if both username and message are filled
                         if (messageText && username) {
-                            var messageRef = database.ref('messages');
-                            messageRef.push({
-                                username: username,
-                                text: messageText,
-                                timestamp: Date.now(),
+                            // Listen for new messages
+                            var messagesRef = database.ref('messages');
+                            messagesRef.on('child_added', function(snapshot) {
+                                const message = snapshot.val();
+                                const messageElement = document.createElement('div');
+                                messageElement.classList.add('message');
+                                messageElement.textContent = message.username + ": " + message.text;
+                                messagesDiv.appendChild(messageElement);
+                            
+                                // Scroll to the bottom to show the latest message
+                                messagesDiv.scrollTop = messagesDiv.scrollHeight;
                             });
-
                             // Clear input fields after sending
                             messageInput.value = '';
                         } else {
