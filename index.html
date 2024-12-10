@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevinDaboiCorp</title>
     <style>
+        #hiddenContent {
+            display: none; /* Hide the content by default */
+        }
+
         /* Container to align the group chat and soundboard side by side */
         .container {
             display: flex;
@@ -93,109 +97,171 @@
         .sound-button:hover {
             background-color: #45a049;
         }
+
+        /* Login form styling */
+        #loginForm {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #errorMessage {
+            color: red;
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Group Chat Section -->
-    <div class="chat-container">
-        <h1>Group Chat</h1>
-        <h4>Put your real name, identity theft is a felony</h4>
+    <div id="loginForm">
+        <h2>Welcome to DevinDaboiCorp!</h2>
 
-        <!-- Input for username -->
-        <input type="text" id="usernameInput" placeholder="Enter your username">
+        <!-- Login Form -->
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <br>
+            <button type="submit">Login</button>
+        </form>
 
-        <div id="messages"></div>
-
-        <input type="text" id="messageInput" placeholder="Type your message">
-        <button onclick="sendMessage()">Send</button>
-
-        <!-- Add Firebase SDKs (v8-style) -->
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-        <script>
-            // Firebase configuration
-            var firebaseConfig = {
-                apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
-                authDomain: "groupchat-5a13b.firebaseapp.com",
-                databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
-                projectId: "groupchat-5a13b",
-                storageBucket: "groupchat-5a13b.firebasestorage.app",
-                messagingSenderId: "223221913801",
-                appId: "1:223221913801:web:7e651c2dcc436608bd1518",
-                measurementId: "G-SHC0GXX7MH"
-            };
-
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            var database = firebase.database();
-
-            // DOM Elements
-            const messagesDiv = document.getElementById('messages');
-            const messageInput = document.getElementById('messageInput');
-            const usernameInput = document.getElementById('usernameInput');
-
-            // Function to send message
-            function sendMessage() {
-                const messageText = messageInput.value.trim();
-                const username = usernameInput.value.trim();
-
-                // Check if both username and message are filled
-                if (messageText && username) {
-                    var messageRef = database.ref('messages');
-                    messageRef.push({
-                        username: username,
-                        text: messageText,
-                        timestamp: Date.now(),
-                    });
-
-                    // Clear input fields after sending
-                    messageInput.value = '';
-                } else {
-                    alert("Please enter both a username and a message.");
-                }
-            }
-
-            // Listen for new messages
-            var messagesRef = database.ref('messages');
-            messagesRef.on('child_added', function(snapshot) {
-                const message = snapshot.val();
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message');
-                messageElement.textContent = message.username + ": " + message.text;
-                messagesDiv.appendChild(messageElement);
-
-                // Scroll to the bottom to show the latest message
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            });
-
-        </script>
+        <p id="errorMessage">Invalid username or password!</p>
     </div>
 
-    <!-- Soundboard Section -->
-    <div class="soundboard-container">
-        <h1>Soundboard</h1>
-        <div class="soundboard">
-            <button class="sound-button" onclick="playSound('sound1.mp3')">Vine boom</button>
-            <button class="sound-button" onclick="playSound('sound2.mp3')">Taco bell</button>
-            <button class="sound-button" onclick="playSound('sound3.mp3')">Metal Pipe</button>
-            <button class="sound-button" onclick="playSound('sound4.mp3')">Bruh</button>
-            <button class="sound-button" onclick="playSound('sound5.mp3')">GET OUT</button>
-            <button class="sound-button" onclick="playSound('sound6.mp3')">Waterphone</button>
-            <button class="sound-button" onclick="playSound('sound7.mp3')">Alarm</button>
-            <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb fart</button>
+    <!-- Hidden Content (Group Chat and Soundboard) -->
+    <div id="hiddenContent">
+        <div class="container">
+            <!-- Group Chat Section -->
+            <div class="chat-container">
+                <h1>Group Chat</h1>
+                <h4>Put your real name, identity theft is a felony</h4>
+
+                <!-- Input for username -->
+                <input type="text" id="usernameInput" placeholder="Enter your username">
+
+                <div id="messages"></div>
+
+                <input type="text" id="messageInput" placeholder="Type your message">
+                <button onclick="sendMessage()">Send</button>
+
+                <!-- Add Firebase SDKs (v8-style) -->
+                <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+                <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+                <script>
+                    // Firebase configuration
+                    var firebaseConfig = {
+                        apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
+                        authDomain: "groupchat-5a13b.firebaseapp.com",
+                        databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
+                        projectId: "groupchat-5a13b",
+                        storageBucket: "groupchat-5a13b.firebasestorage.app",
+                        messagingSenderId: "223221913801",
+                        appId: "1:223221913801:web:7e651c2dcc436608bd1518",
+                        measurementId: "G-SHC0GXX7MH"
+                    };
+
+                    // Initialize Firebase
+                    firebase.initializeApp(firebaseConfig);
+                    var database = firebase.database();
+
+                    // DOM Elements
+                    const messagesDiv = document.getElementById('messages');
+                    const messageInput = document.getElementById('messageInput');
+                    const usernameInput = document.getElementById('usernameInput');
+
+                    // Function to send message
+                    function sendMessage() {
+                        const messageText = messageInput.value.trim();
+                        const username = usernameInput.value.trim();
+
+                        // Check if both username and message are filled
+                        if (messageText && username) {
+                            var messageRef = database.ref('messages');
+                            messageRef.push({
+                                username: username,
+                                text: messageText,
+                                timestamp: Date.now(),
+                            });
+
+                            // Clear input fields after sending
+                            messageInput.value = '';
+                        } else {
+                            alert("Please enter both a username and a message.");
+                        }
+                    }
+
+                    // Listen for new messages
+                    var messagesRef = database.ref('messages');
+                    messagesRef.on('child_added', function(snapshot) {
+                        const message = snapshot.val();
+                        const messageElement = document.createElement('div');
+                        messageElement.classList.add('message');
+                        messageElement.textContent = message.username + ": " + message.text;
+                        messagesDiv.appendChild(messageElement);
+
+                        // Scroll to the bottom to show the latest message
+                        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                    });
+                </script>
+            </div>
+
+            <!-- Soundboard Section -->
+            <div class="soundboard-container">
+                <h1>Soundboard</h1>
+                <div class="soundboard">
+                    <button class="sound-button" onclick="playSound('sound1.mp3')">Vine boom</button>
+                    <button class="sound-button" onclick="playSound('sound2.mp3')">Taco bell</button>
+                    <button class="sound-button" onclick="playSound('sound3.mp3')">Metal Pipe</button>
+                    <button class="sound-button" onclick="playSound('sound4.mp3')">Bruh</button>
+                    <button class="sound-button" onclick="playSound('sound5.mp3')">GET OUT</button>
+                    <button class="sound-button" onclick="playSound('sound6.mp3')">Waterphone</button>
+                    <button class="sound-button" onclick="playSound('sound7.mp3')">Alarm</button>
+                    <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb fart</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    function playSound(soundFile) {
-        const audio = new Audio(soundFile);
-        audio.play();
-    }
-</script>
+    <script>
+        // Hardcoded list of usernames and passwords
+        const users = {
+            "DevinDaboi": "IEAT31415",
+            "Caspianoregiano": "JesusIsLord",
+            "migueel": "tacobell1",
+            "user3": "password3"
+        };
+
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent page reload on form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Check if the username and password match any entry in the users list
+            if (users[username] && users[username] === password) {
+                // Hide the login form
+                document.getElementById('loginForm').style.display = 'none';
+
+                // Show hidden content
+                document.getElementById('hiddenContent').style.display = 'block';
+
+                // Hide error message if displayed
+                errorMessage.style.display = 'none';
+            } else {
+                // Show error message
+                errorMessage.style.display = 'block';
+            }
+        });
+
+        function playSound(soundFile) {
+            const audio = new Audio(soundFile);
+            audio.play();
+        }
+    </script>
 
 </body>
 </html>
