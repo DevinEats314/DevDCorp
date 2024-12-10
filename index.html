@@ -218,6 +218,9 @@
                 loginForm.style.display = 'none';
                 hiddenContent.style.display = 'block';
                 errorMessage.style.display = 'none';
+
+                // Ensure the chat starts at the bottom on initial load
+                setTimeout(scrollToBottom, 100);  // Small delay to allow the DOM to load
             } else {
                 errorMessage.style.display = 'block';
             }
@@ -260,8 +263,13 @@
             messagesDiv.appendChild(messageElement);
 
             // Scroll to the bottom after the message is added
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            setTimeout(scrollToBottom, 100);
         });
+
+        // Function to scroll to the bottom
+        function scrollToBottom() {
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
 
         function playSound(soundFile) {
             const audio = new Audio(soundFile);
