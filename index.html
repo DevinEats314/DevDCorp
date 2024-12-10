@@ -34,7 +34,7 @@
 
         /* Chat Section */
         #messages {
-            width: 60%; /* Adjusted to move chat more to the right */
+            width: 60%;
             max-width: 500px;
             height: 70vh;
             overflow-y: auto;
@@ -44,7 +44,7 @@
             border-radius: 10px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             display: flex;
-            flex-direction: column-reverse; /* Chat now shows newest messages at the bottom */
+            flex-direction: column-reverse; /* Newest messages at the bottom */
         }
 
         .message {
@@ -119,6 +119,11 @@
             margin-left: 20px;
         }
 
+        label {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -147,8 +152,11 @@
             <div class="chat-section">
                 <div id="messages"></div>
 
-                <input type="text" id="usernameInput" placeholder="Enter your username">
-                <input type="text" id="messageInput" placeholder="Type your message">
+                <label for="usernameInput">Enter your username:</label>
+                <input type="text" id="usernameInput" placeholder="Username">
+                
+                <label for="messageInput">Type your message:</label>
+                <input type="text" id="messageInput" placeholder="Message">
                 <button onclick="sendMessage()">Send</button>
             </div>
 
