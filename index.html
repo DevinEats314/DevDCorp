@@ -154,6 +154,69 @@
     });
 
   </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soundboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+
+        .soundboard {
+            display: grid;
+            grid-template-columns: repeat(4, 150px);
+            grid-gap: 10px;
+            justify-items: center;
+        }
+
+        .sound-button {
+            padding: 20px;
+            font-size: 16px;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .sound-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="soundboard">
+        <button class="sound-button" onclick="playSound('sound1.mp3')">Vine boom</button>
+        <button class="sound-button" onclick="playSound('sound2.mp3')">Taco bell</button>
+        <button class="sound-button" onclick="playSound('sound3.mp3')">Metal Pipe</button>
+        <button class="sound-button" onclick="playSound('sound4.mp3')">Bruh</button>
+        <button class="sound-button" onclick="playSound('sound5.mp3')">GET OUT</button>
+        <button class="sound-button" onclick="playSound('sound6.mp3')">Waterphone</button>
+        <button class="sound-button" onclick="playSound('sound7.mp3')">Alarm</button>
+        <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb fart</button>
+    </div>
+
+    <script>
+        function playSound(soundFile) {
+            const audio = new Audio(soundFile);
+            audio.play();
+        }
+    </script>
+
+</body>
+</html>
 
 </body>
     </div>
