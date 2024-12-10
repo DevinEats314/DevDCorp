@@ -208,7 +208,24 @@
 
                         // Scroll to the bottom to show the latest message
                         messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+                        // Send notification
+                        if (Notification.permission === "granted") {
+                            new Notification("New Message", {
+                                body: message.username + ": " + message.text,
+                                icon: "icon.png" // Optional: Add an icon for the notification
+                            });
+                        }
                     });
+
+                    // Request notification permission
+                    if (Notification.permission !== "denied") {
+                        Notification.requestPermission().then(permission => {
+                            if (permission === "granted") {
+                                console.log("Notification permission granted.");
+                            }
+                        });
+                    }
                 </script>
             </div>
 
