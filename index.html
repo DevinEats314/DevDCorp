@@ -188,6 +188,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
+        console.log("Starting script..."); // Debugging
+
         // Your web app's Firebase configuration
         var firebaseConfig = {
             apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
@@ -282,23 +284,4 @@
             const timeDiff = (currentTimestamp - messageTimestamp) / 1000; // Difference in seconds
 
             // Show a notification only if the message was posted within the last second
-            if (Notification.permission === "granted" && timeDiff <= 1) {
-                const notification = new Notification("New Message in Group Chat", {
-                    body: message.username + ": " + message.text,
-                    icon: "https://www.example.com/icon.png",  // Optional: replace with your custom icon URL
-                });
-            }
-        });
-
-        // Function to scroll to the bottom
-        function scrollToBottom() {
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        function playSound(soundFile) {
-            const audio = new Audio(soundFile);
-            audio.play();
-        }
-    </script>
-</body>
-</html>
+            if (Notification.permission === "granted" &&
