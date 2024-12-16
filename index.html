@@ -189,127 +189,131 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        console.log("Starting script..."); // Debugging
+    console.log("Starting script..."); // Debugging
 
-        // Your web app's Firebase configuration
-        var firebaseConfig = {
-            apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
-            authDomain: "groupchat-5a13b.firebaseapp.com",
-            databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
-            projectId: "groupchat-5a13b",
-            storageBucket: "groupchat-5a13b.firebasestorage.app",
-            messagingSenderId: "223221913801",
-            appId: "1:223221913801:web:7e651c2dcc436608bd1518",
-            measurementId: "G-SHC0GXX7MH"
-        };
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
+        authDomain: "groupchat-5a13b.firebaseapp.com",
+        databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
+        projectId: "groupchat-5a13b",
+        storageBucket: "groupchat-5a13b.firebasestorage.app",
+        messagingSenderId: "223221913801",
+        appId: "1:223221913801:web:7e651c2dcc436608bd1518",
+        measurementId: "G-SHC0GXX7MH"
+    };
 
-        firebase.initializeApp(firebaseConfig);
-        var database = firebase.database();
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
 
-        // DOM Elements
-        const messagesDiv = document.getElementById('messages');
-        const messageInput = document.getElementById('messageInput');
-        const usernameInput = document.getElementById('usernameInput');
-        const errorMessage = document.getElementById('errorMessage');
-        const loginForm = document.getElementById('loginForm');
-        const hiddenContent = document.getElementById('hiddenContent');
+    // DOM Elements
+    const messagesDiv = document.getElementById('messages');
+    const messageInput = document.getElementById('messageInput');
+    const errorMessage = document.getElementById('errorMessage');
+    const loginForm = document.getElementById('loginForm');
+    const hiddenContent = document.getElementById('hiddenContent');
 
-        const users = {
-            "DevinDaboi": "IEAT31415",
-            "Caspianoregiano": "JesusIsLord",
-            "migueel": "tacobell1",
-            "TheRealSlimShady": "blackpython11",
-            "Spamton1997": "Ilovemonkeys",
-            "Siu": "Ronaldo",
-            "steeevoh": "nothisispatrick",
-            "Doge": "toktik",
-            "SilasL": "SilasL",
-            "user3": "password3"
-        };
+    // Global variable to store logged-in username
+    let loggedInUsername = null;
 
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+    const users = {
+        "DevinDaboi": "IEAT31415",
+        "Caspianoregiano": "JesusIsLord",
+        "migueel": "tacobell1",
+        "TheRealSlimShady": "blackpython11",
+        "Spamton1997": "Ilovemonkeys",
+        "Siu": "Ronaldo",
+        "steeevoh": "nothisispatrick",
+        "Doge": "toktik",
+        "SilasL": "SilasL",
+        "user3": "password3"
+    };
 
-            if (users[username] && users[username] === password) {
-                loginForm.style.display = 'none';
-                hiddenContent.style.display = 'block';
-                errorMessage.style.display = 'none';
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
 
-                // Ensure the chat starts at the bottom on initial load
-                setTimeout(scrollToBottom, 100);  // Small delay to allow the DOM to load
-            } else {
-                errorMessage.style.display = 'block';
-            }
-        });
+        if (users[username] && users[username] === password) {
+            loginForm.style.display = 'none';
+            hiddenContent.style.display = 'block';
+            errorMessage.style.display = 'none';
 
-        // Set up Notification permission
-        if (Notification.permission !== "granted") {
-            Notification.requestPermission();
+            // Set the logged-in username
+            loggedInUsername = username;
+
+            // Ensure the chat starts at the bottom on initial load
+            setTimeout(scrollToBottom, 100);  // Small delay to allow the DOM to load
+        } else {
+            errorMessage.style.display = 'block';
         }
+    });
 
-        function sendMessage() {
-            const messageText = messageInput.value.trim();
-            const username = usernameInput.value.trim();
+    // Set up Notification permission
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+    }
 
-            if (messageText && username) {
-                var messageRef = database.ref('messages');
-                var newMessageRef = messageRef.push();
-                
-                // Get current date and time in readable format
-                var timestamp = new Date().toLocaleString();  // Format: "MM/DD/YYYY, HH:mm:ss"
-                
-                newMessageRef.set({
-                    username: username,
-                    text: messageText,
-                    timestamp: timestamp
-                });
+    function sendMessage() {
+        const messageText = messageInput.value.trim();
 
-                messageInput.value = '';
-            } else {
-                alert("Please enter both a username and a message.");
-            }
+        if (messageText && loggedInUsername) {
+            var messageRef = database.ref('messages');
+            var newMessageRef = messageRef.push();
+            
+            // Get current date and time in readable format
+            var timestamp = new Date().toLocaleString();  // Format: "MM/DD/YYYY, HH:mm:ss"
+            
+            newMessageRef.set({
+                username: loggedInUsername,
+                text: messageText,
+                timestamp: timestamp
+            });
+
+            messageInput.value = '';
+        } else {
+            alert("Please enter a message.");
         }
+    }
 
-        var messagesRef = database.ref('messages');
-        messagesRef.on('child_added', function(snapshot) {
-            const message = snapshot.val();
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            messageElement.textContent = message.username + ": " + message.text + " (" + message.timestamp + ")";
-            messagesDiv.appendChild(messageElement);
+    var messagesRef = database.ref('messages');
+    messagesRef.on('child_added', function(snapshot) {
+        const message = snapshot.val();
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.textContent = message.username + ": " + message.text + " (" + message.timestamp + ")";
+        messagesDiv.appendChild(messageElement);
 
-            // Scroll to the bottom after the message is added
-            setTimeout(scrollToBottom, 100);
+        // Scroll to the bottom after the message is added
+        setTimeout(scrollToBottom, 100);
 
-            // Get the current timestamp
-            const currentTimestamp = new Date();
-            const messageTimestamp = new Date(message.timestamp);
+        // Get the current timestamp
+        const currentTimestamp = new Date();
+        const messageTimestamp = new Date(message.timestamp);
 
-            // Calculate the time difference in seconds
-            const timeDiff = (currentTimestamp - messageTimestamp) / 1000; // Difference in seconds
+        // Calculate the time difference in seconds
+        const timeDiff = (currentTimestamp - messageTimestamp) / 1000; // Difference in seconds
 
-            // Show a notification only if the message was posted within the last second
-            if (Notification.permission === "granted" && timeDiff <= 1) {
-                const notification = new Notification("New Message in Group Chat", {
-                    body: message.username + ": " + message.text,
-                    icon: "https://www.example.com/icon.png",  // Optional: replace with your custom icon URL
-                });
-            }
-        });
-
-        // Function to scroll to the bottom
-        function scrollToBottom() {
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        // Show a notification only if the message was posted within the last second
+        if (Notification.permission === "granted" && timeDiff <= 1) {
+            const notification = new Notification("New Message in Group Chat", {
+                body: message.username + ": " + message.text,
+                icon: "https://www.example.com/icon.png",  // Optional: replace with your custom icon URL
+            });
         }
+    });
 
-        function playSound(soundFile) {
-            const audio = new Audio(soundFile);
-            audio.play();
-        }
+    // Function to scroll to the bottom
+    function scrollToBottom() {
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
 
-        console.log("Script loaded successfully!"); // Debugging
-    </script>
+    function playSound(soundFile) {
+        const audio = new Audio(soundFile);
+        audio.play();
+    }
+
+    console.log("Script loaded successfully!"); // Debugging
+</script>
 </body>
 </html>
