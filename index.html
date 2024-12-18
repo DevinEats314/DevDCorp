@@ -268,14 +268,27 @@
         function sendMessage() {
             const message = messageInput.value.trim();
             if (message !== "") {
+                const timestamp = new Date().toLocaleString();  // Get current date and time
                 const messageData = {
                     username: loggedInUsername,
-                    message: message
+                    message: message,
+                    timestamp: timestamp
                 };
                 database.ref('messages').push(messageData);
                 messageInput.value = "";  // Clear input field
             }
         }
+        
+        // Fetch and display messages from Firebase
+        database.ref('messages').on('child_added', function(snapshot) {
+            const messageData = snapshot.val();
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.innerHTML = `<strong>${messageData.username}</strong>: ${messageData.message} <span style="font-size: 0.8em; color: gray;">(${messageData.timestamp})</span>`;
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;  // Scroll to the bottom
+        });
+
 
         function playSound(file) {
             var audio = new Audio(file);
