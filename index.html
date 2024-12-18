@@ -188,6 +188,7 @@
     <div class="game-buttons">
         <button onclick="openTetris()">Play Tetris!</button>
         <button onclick="openPong()">Play Pong!</button>
+        <button onclick="openMario()">Play Mario!</button>
     </div>
 </div>
             </div>
@@ -301,6 +302,19 @@
     function openPong() {
         var win = window.open()
         var url = "Pong/pong.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function openMario() {
+        var win = window.open()
+        var url = "Mario/Mario.html"
         if (url) {
         var iframe = document.createElement("iframe")
         iframe.style.border = "none";
