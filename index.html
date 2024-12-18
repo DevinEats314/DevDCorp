@@ -152,24 +152,53 @@
             </div>
 
             <!-- Soundboard Section -->
-            <div class="soundboard-section">
-                <h2>Soundboard</h2>
-                <div class="soundboard">
-                    <button class="sound-button" onclick="playSound('sound1.mp3')">Vine Boom</button>
-                    <button class="sound-button" onclick="playSound('sound2.mp3')">Taco Bell</button>
-                    <button class="sound-button" onclick="playSound('sound3.mp3')">Metal Pipe</button>
-                    <button class="sound-button" onclick="playSound('sound4.mp3')">Bruh</button>
-                </div>
-            </div>
-
-            <!-- Games Section -->
-            <div class="games-section">
-                <h2>Games</h2>
-                <button onclick="window.location.href='Tetris/tetrisgame.html'">Play Tetris</button>
-            </div>
-
-        </div>
+<div class="soundboard-section">
+    <h1>Soundboard</h1>
+    <div class="soundboard">
+        <button class="sound-button" onclick="playSound('sounds/sound1.mp3')">Vine Boom</button>
+        <button class="sound-button" onclick="playSound('sounds/sound2.mp3')">Taco Bell</button>
+        <button class="sound-button" onclick="playSound('sounds/sound3.mp3')">Metal Pipe</button>
+        <button class="sound-button" onclick="playSound('sounds/sound4.mp3')">Bruh</button>
+        <button class="sound-button" onclick="playSound('sounds/sound5.mp3')">GET OUT</button>
+        <button class="sound-button" onclick="playSound('sounds/sound6.mp3')">Waterphone</button>
+        <button class="sound-button" onclick="playSound('sounds/sound7.mp3')">Alarm</button>
+        <button class="sound-button" onclick="playSound('sounds/sound8.mp3')">Reverb Fart</button>
+        <button class="sound-button" onclick="playSound('sounds/sound9.mp3')">Bruh DAYYAYAAA</button>
+        <button class="sound-button" onclick="playSound('sounds/sound10.mp3')">The campus is now in lockdown</button>
     </div>
+</div>
+
+
+           <!-- Games Section -->
+<div class="games-section">
+    <h2>Games</h2>
+    <button id="tetrisButton" onclick="window.location.href='about:blank'">Play Tetris</button>
+</div>
+
+<script>
+    // Add the logic to update the Tetris button link after login
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (users[username] && users[username] === password) {
+            loginForm.style.display = 'none';
+            hiddenContent.style.display = 'block';
+            errorMessage.style.display = 'none';
+            loggedInUsername = username;
+            setTimeout(scrollToBottom, 100); // Auto-scroll to the bottom
+
+            // Update the Tetris button URL after successful login
+            document.getElementById('tetrisButton').onclick = function() {
+                window.location.href = 'Tetris/tetrisgame.html'; // The actual Tetris game URL
+            };
+        } else {
+            errorMessage.style.display = 'block';
+        }
+    });
+</script>
+
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
