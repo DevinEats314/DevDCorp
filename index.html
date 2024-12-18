@@ -185,7 +185,8 @@
 
         <!-- Games Section -->
         <h1>Games</h1>
-        <button onclick="openTetris()">Play Tetris</button>
+        <button onclick="openTetris()">Play Tetris!</button>
+        <button onclick="openPong()">Play Pong!</button>h
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -282,6 +283,19 @@
     function openTetris() {
         var win = window.open()
         var url = "https://devineats314.github.io/DevDCorp/Tetris/tetrisgame.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function openPong() {
+        var win = window.open()
+        var url = "https://devineats314.github.io/DevDCorp/Pong/pong.html"
         if (url) {
         var iframe = document.createElement("iframe")
         iframe.style.border = "none";
