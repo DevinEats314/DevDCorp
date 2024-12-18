@@ -122,6 +122,15 @@
             flex: 1;
         }
 
+        /* Game Section */
+        .game-section {
+            display: grid;
+            grid-template-columns: repeat(4, 150px);
+            grid-gap: 10px;
+            justify-items: center;
+            margin-top: 30px;
+        }
+        
         label {
             font-size: 16px;
             margin-top: 10px;
@@ -130,7 +139,7 @@
         h1 {
             text-align: center;
         }
-
+        
     </style>
 </head>
 <body>
@@ -184,14 +193,12 @@
 
         <!-- Games Section -->
         <h1>Games</h1>
-<div>
-    <button onclick="openTetris()">Play Tetris!</button>
-</div>
-<div>
-    <button onclick="openPong()">Play Pong!</button>
-</div>
-    </div>
+        <div class="game-section">
+            <button onclick="openTetris()">Play Tetris!</button>
+            <button onclick="openPong()">Play Pong!</button>
+        </div>
             </div>
+                    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
