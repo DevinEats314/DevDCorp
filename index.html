@@ -16,128 +16,61 @@
             background-color: #f4f4f4;
         }
 
-        #welcomeMessage {
+        h2, h3, h1 {
             text-align: center;
+        }
+
+        #loginForm, #errorMessage, #hiddenContent {
             width: 100%;
+            text-align: center;
             margin-top: 20px;
         }
 
-        #loginForm {
-            text-align: center;
-            width: 100%;
+        #messages, .soundboard, .games-section {
+            margin-top: 20px;
         }
 
-        #hiddenContent {
-            display: none;
-            width: 100%;
-            text-align: center;
-        }
-
-        /* Chat Section */
         #messages {
             width: 100%;
             max-width: 500px;
             height: 70vh;
             overflow-y: auto;
-            margin-top: 20px;
             padding: 10px;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column; /* This should ensure the messages stack correctly */
         }
 
-        .message {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-        }
-
-        input[type="text"] {
-            width: 80%;
-            padding: 10px;
-            font-size: 16px;
+        .message, button, input[type="text"], input[type="password"] {
             margin-top: 10px;
             border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            padding: 10px;
             font-size: 16px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
         }
 
-        /* Soundboard Section */
-        .soundboard {
+        .soundboard, .games-section {
             display: grid;
             grid-template-columns: repeat(4, 150px);
-            grid-gap: 10px;
-            justify-items: center;
-            margin-top: 30px;
+            gap: 10px;
+            justify-content: center;
         }
 
-        .sound-button {
-            padding: 20px;
-            font-size: 16px;
-            text-align: center;
+        .sound-button, .game-button {
+            padding: 15px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        .sound-button:hover {
+        .sound-button:hover, .game-button:hover {
             background-color: #45a049;
         }
-
-        #errorMessage {
-            color: red;
-            display: none;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: row; /* Stack the chat and soundboard sections horizontally */
-            justify-content: center;
-            align-items: flex-start;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .chat-section {
-            flex: 1;
-            margin-right: 20px; /* Add some space between chat and soundboard */
-        }
-
-        .soundboard-section {
-            flex: 1;
-        }
-
-        label {
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
     </style>
 </head>
 <body>
-
     <h2 id="welcomeMessage">Welcome to DevinDaboiCorp!</h2>
 
-    <!-- Login Form -->
     <form id="loginForm">
         <label for="username">Username:</label>
         <input type="text" id="username" required>
@@ -148,170 +81,118 @@
         <button type="submit">Login</button>
     </form>
 
-    <p id="errorMessage">Invalid username or password!</p>
+    <p id="errorMessage" style="display: none; color: red;">Invalid username or password!</p>
 
-    <!-- Hidden Content (Visible after login) -->
-    <div id="hiddenContent">
+    <div id="hiddenContent" style="display: none;">
         <h3>Enjoy your stay!</h3>
 
-        <div class="container">
-            <!-- Chat Section -->
-            <div class="chat-section">
-                <h1>Group Chat</h1>
-                <p>use your real name, identity theft is a felony</p>
-                <div id="messages"></div>
-                <label for="messageInput">message:</label>
-                <input type="text" id="messageInput" placeholder="Message">
-                <button onclick="sendMessage()">Send</button>
-            </div>
+        <div class="chat-section">
+            <h1>Group Chat</h1>
+            <p>Use your real name; identity theft is a felony.</p>
+            <div id="messages"></div>
+            <input type="text" id="messageInput" placeholder="Message">
+            <button onclick="sendMessage()">Send</button>
+        </div>
 
-            <!-- Soundboard Section -->
-            <div class="soundboard-section">
-                <h1>Soundboard</h1>
-                <div class="soundboard">
-                    <button class="sound-button" onclick="playSound('sound1.mp3')">Vine Boom</button>
-                    <button class="sound-button" onclick="playSound('sound2.mp3')">Taco Bell</button>
-                    <button class="sound-button" onclick="playSound('sound3.mp3')">Metal Pipe</button>
-                    <button class="sound-button" onclick="playSound('sound4.mp3')">Bruh</button>
-                    <button class="sound-button" onclick="playSound('sound5.mp3')">GET OUT</button>
-                    <button class="sound-button" onclick="playSound('sound6.mp3')">Waterphone</button>
-                    <button class="sound-button" onclick="playSound('sound7.mp3')">Alarm</button>
-                    <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb Fart</button>
-                    <button class="sound-button" onclick="playSound('sound9.mp3')">Bruh DAYYAYAAA</button>
-                    <button class="sound-button" onclick="playSound('sound10.mp3')">The campus is now in lockdown</button>
-                </div>
+        <div class="soundboard-section">
+            <h1>Soundboard</h1>
+            <div class="soundboard">
+                <button class="sound-button" onclick="playSound('sound1.mp3')">Vine Boom</button>
+                <button class="sound-button" onclick="playSound('sound2.mp3')">Taco Bell</button>
+                <button class="sound-button" onclick="playSound('sound3.mp3')">Metal Pipe</button>
+                <button class="sound-button" onclick="playSound('sound4.mp3')">Bruh</button>
+                <button class="sound-button" onclick="playSound('sound5.mp3')">GET OUT</button>
+                <button class="sound-button" onclick="playSound('sound6.mp3')">Waterphone</button>
+                <button class="sound-button" onclick="playSound('sound7.mp3')">Alarm</button>
+                <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb Fart</button>
+            </div>
+        </div>
+
+        <div class="games-section">
+            <h1>Games</h1>
+            <button class="game-button" onclick="openGame('Tetris/tetrisgame.html')">Play Tetris</button>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-    console.log("Starting script..."); // Debugging
+        const firebaseConfig = {
+            apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
+            authDomain: "groupchat-5a13b.firebaseapp.com",
+            databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
+            projectId: "groupchat-5a13b",
+            storageBucket: "groupchat-5a13b.appspot.com",
+            messagingSenderId: "223221913801",
+            appId: "1:223221913801:web:7e651c2dcc436608bd1518",
+            measurementId: "G-SHC0GXX7MH"
+        };
 
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
-        authDomain: "groupchat-5a13b.firebaseapp.com",
-        databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
-        projectId: "groupchat-5a13b",
-        storageBucket: "groupchat-5a13b.firebasestorage.app",
-        messagingSenderId: "223221913801",
-        appId: "1:223221913801:web:7e651c2dcc436608bd1518",
-        measurementId: "G-SHC0GXX7MH"
-    };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const messagesDiv = document.getElementById('messages');
+        const messageInput = document.getElementById('messageInput');
+        const loginForm = document.getElementById('loginForm');
+        const hiddenContent = document.getElementById('hiddenContent');
+        const errorMessage = document.getElementById('errorMessage');
 
-    firebase.initializeApp(firebaseConfig);
-    var database = firebase.database();
+        const users = {
+            "DevinDaboi": "IEAT31415",
+            "Caspianoregiano": "JesusIsLord",
+            // Add other users here
+        };
 
-    // DOM Elements
-    const messagesDiv = document.getElementById('messages');
-    const messageInput = document.getElementById('messageInput');
-    const errorMessage = document.getElementById('errorMessage');
-    const loginForm = document.getElementById('loginForm');
-    const hiddenContent = document.getElementById('hiddenContent');
+        let loggedInUsername = null;
 
-    // Global variable to store logged-in username
-    let loggedInUsername = null;
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-    const users = {
-        "DevinDaboi": "IEAT31415",
-        "Caspianoregiano": "JesusIsLord",
-        "migueel": "tacobell1",
-        "TheRealSlimShady": "blackpython11",
-        "Spamton1997": "Ilovemonkeys",
-        "Siu": "Ronaldo",
-        "steeevoh": "nothisispatrick",
-        "Doge": "toktik",
-        "Silas": "sUper",
-        "Frederick": "voyager-3",
-        "user3": "password3"
-    };
+            if (users[username] && users[username] === password) {
+                loginForm.style.display = 'none';
+                hiddenContent.style.display = 'block';
+                errorMessage.style.display = 'none';
+                loggedInUsername = username;
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        });
 
-    loginForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        if (users[username] && users[username] === password) {
-            loginForm.style.display = 'none';
-            hiddenContent.style.display = 'block';
-            errorMessage.style.display = 'none';
-
-            // Set the logged-in username
-            loggedInUsername = username;
-
-            // Ensure the chat starts at the bottom on initial load
-            setTimeout(scrollToBottom, 100);  // Small delay to allow the DOM to load
-        } else {
-            errorMessage.style.display = 'block';
+        function sendMessage() {
+            const messageText = messageInput.value.trim();
+            if (messageText && loggedInUsername) {
+                const timestamp = new Date().toLocaleString();
+                database.ref('messages').push({
+                    username: loggedInUsername,
+                    text: messageText,
+                    time: timestamp
+                });
+                messageInput.value = '';
+            }
         }
-    });
 
-    // Set up Notification permission
-    if (Notification.permission !== "granted") {
-        Notification.requestPermission();
-    }
-
-    function sendMessage() {
-        const messageText = messageInput.value.trim();
-
-        if (messageText && loggedInUsername) {
-            var messageRef = database.ref('messages');
-            var newMessageRef = messageRef.push();
-            
-            // Get current date and time in readable format
-            var timestamp = new Date().toLocaleString();  // Format: "MM/DD/YYYY, HH:mm:ss"
-            
-            newMessageRef.set({
-                username: loggedInUsername,
-                text: messageText,
-                timestamp: timestamp
-            });
-
-            messageInput.value = '';
-        } else {
-            alert("Please enter a message.");
+        function scrollToBottom() {
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
-    }
 
-    var messagesRef = database.ref('messages');
-    messagesRef.on('child_added', function(snapshot) {
-        const message = snapshot.val();
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message');
-        messageElement.textContent = message.username + ": " + message.text + " (" + message.timestamp + ")";
-        messagesDiv.appendChild(messageElement);
+        database.ref('messages').on('child_added', function(snapshot) {
+            const message = snapshot.val();
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.textContent = `${message.username}: ${message.text} (${message.time})`;
+            messagesDiv.appendChild(messageDiv);
+            scrollToBottom();
+        });
 
-        // Scroll to the bottom after the message is added
-        setTimeout(scrollToBottom, 100);
-
-        // Get the current timestamp
-        const currentTimestamp = new Date();
-        const messageTimestamp = new Date(message.timestamp);
-
-        // Calculate the time difference in seconds
-        const timeDiff = (currentTimestamp - messageTimestamp) / 1000; // Difference in seconds
-
-        // Show a notification only if the message was posted within the last second
-        if (Notification.permission === "granted" && timeDiff <= 1) {
-            const notification = new Notification("New Message in Group Chat", {
-                body: message.username + ": " + message.text,
-                icon: "https://www.example.com/icon.png",  // Optional: replace with your custom icon URL
-            });
+        function playSound(file) {
+            const audio = new Audio(file);
+            audio.play();
         }
-    });
 
-    // Function to scroll to the bottom
-    function scrollToBottom() {
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    function playSound(soundFile) {
-        const audio = new Audio(soundFile);
-        audio.play();
-    }
-
-    console.log("Script loaded successfully!"); // Debugging
-</script>
+        function openGame(gameUrl) {
+            window.open(gameUrl, '_blank');
+        }
+    </script>
 </body>
 </html>
