@@ -280,7 +280,17 @@
     }
 
     function openTetris() {
-        window.open('Tetris/tetrisgame.html', '_blank');
+        var win = window.open()
+        var url = "https://devineats314.github.io/Tetris/tetrisgame.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
     }
 
     // Fetch and display chat messages from Firebase
