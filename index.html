@@ -6,86 +6,18 @@
     <title>DevinDaboiCorp</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
+        /* Other existing styles */
 
-        #welcomeMessage {
-            text-align: center;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        #loginForm {
-            text-align: center;
-            width: 100%;
-        }
-
-        #hiddenContent {
-            display: none;
+        /* Games Section */
+        .games-section {
             width: 100%;
             text-align: center;
-        }
-
-        /* Chat Section */
-        #messages {
-            width: 100%;
-            max-width: 500px;
-            height: 70vh;
-            overflow-y: auto;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column; /* This should ensure the messages stack correctly */
-        }
-
-        .message {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-        }
-
-        input[type="text"] {
-            width: 80%;
-            padding: 10px;
-            font-size: 16px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        button {
-            padding: 10px;
-            font-size: 16px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        /* Soundboard Section */
-        .soundboard {
-            display: grid;
-            grid-template-columns: repeat(4, 150px);
-            grid-gap: 10px;
-            justify-items: center;
             margin-top: 30px;
         }
 
-        .sound-button {
-            padding: 20px;
-            font-size: 16px;
+        .games-section button {
+            padding: 15px;
+            font-size: 18px;
             text-align: center;
             background-color: #4CAF50;
             color: white;
@@ -95,46 +27,14 @@
             transition: background-color 0.3s ease;
         }
 
-        .sound-button:hover {
+        .games-section button:hover {
             background-color: #45a049;
         }
-
-        #errorMessage {
-            color: red;
-            display: none;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: row; /* Stack the chat and soundboard sections horizontally */
-            justify-content: center;
-            align-items: flex-start;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .chat-section {
-            flex: 1;
-            margin-right: 20px; /* Add some space between chat and soundboard */
-        }
-
-        .soundboard-section {
-            flex: 1;
-        }
-
-        label {
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
     </style>
 </head>
 <body>
 
+    <!-- Existing Content -->
     <h2 id="welcomeMessage">Welcome to DevinDaboiCorp!</h2>
 
     <!-- Login Form -->
@@ -169,26 +69,24 @@
             <div class="soundboard-section">
                 <h1>Soundboard</h1>
                 <div class="soundboard">
-                    <button class="sound-button" onclick="playSound('sound1.mp3')">Vine Boom</button>
-                    <button class="sound-button" onclick="playSound('sound2.mp3')">Taco Bell</button>
-                    <button class="sound-button" onclick="playSound('sound3.mp3')">Metal Pipe</button>
-                    <button class="sound-button" onclick="playSound('sound4.mp3')">Bruh</button>
-                    <button class="sound-button" onclick="playSound('sound5.mp3')">GET OUT</button>
-                    <button class="sound-button" onclick="playSound('sound6.mp3')">Waterphone</button>
-                    <button class="sound-button" onclick="playSound('sound7.mp3')">Alarm</button>
-                    <button class="sound-button" onclick="playSound('sound8.mp3')">Reverb Fart</button>
-                    <button class="sound-button" onclick="playSound('sound9.mp3')">Bruh DAYYAYAAA</button>
-                    <button class="sound-button" onclick="playSound('sound10.mp3')">The campus is now in lockdown</button>
+                    <!-- Sound buttons here -->
                 </div>
+            </div>
+        </div>
+
+        <!-- Games Section -->
+        <div class="games-section">
+            <h1>Games</h1>
+            <button id="playTetris" onclick="redirectToTetris()">Play Tetris</button>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-    console.log("Starting script..."); // Debugging
+    console.log("Starting script...");
 
-    // Your web app's Firebase configuration
+    // Your Firebase configuration
     var firebaseConfig = {
         apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
         authDomain: "groupchat-5a13b.firebaseapp.com",
@@ -204,13 +102,11 @@
     var database = firebase.database();
 
     // DOM Elements
-    const messagesDiv = document.getElementById('messages');
-    const messageInput = document.getElementById('messageInput');
-    const errorMessage = document.getElementById('errorMessage');
     const loginForm = document.getElementById('loginForm');
     const hiddenContent = document.getElementById('hiddenContent');
-
-    // Global variable to store logged-in username
+    const errorMessage = document.getElementById('errorMessage');
+    const messageInput = document.getElementById('messageInput');
+    const messagesDiv = document.getElementById('messages');
     let loggedInUsername = null;
 
     const users = {
@@ -236,82 +132,30 @@
             loginForm.style.display = 'none';
             hiddenContent.style.display = 'block';
             errorMessage.style.display = 'none';
-
-            // Set the logged-in username
             loggedInUsername = username;
-
-            // Ensure the chat starts at the bottom on initial load
-            setTimeout(scrollToBottom, 100);  // Small delay to allow the DOM to load
         } else {
             errorMessage.style.display = 'block';
         }
     });
 
-    // Set up Notification permission
-    if (Notification.permission !== "granted") {
-        Notification.requestPermission();
-    }
-
-    function sendMessage() {
-        const messageText = messageInput.value.trim();
-
-        if (messageText && loggedInUsername) {
-            var messageRef = database.ref('messages');
-            var newMessageRef = messageRef.push();
-            
-            // Get current date and time in readable format
-            var timestamp = new Date().toLocaleString();  // Format: "MM/DD/YYYY, HH:mm:ss"
-            
-            newMessageRef.set({
-                username: loggedInUsername,
-                text: messageText,
-                timestamp: timestamp
-            });
-
-            messageInput.value = '';
+    // Redirect to Tetris game
+    function redirectToTetris() {
+        if (loggedInUsername) {
+            window.location.href = "Tetris/tetrisgame.html";
         } else {
-            alert("Please enter a message.");
+            alert("You must be logged in to play Tetris!");
         }
     }
 
-    var messagesRef = database.ref('messages');
-    messagesRef.on('child_added', function(snapshot) {
-        const message = snapshot.val();
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message');
-        messageElement.textContent = message.username + ": " + message.text + " (" + message.timestamp + ")";
-        messagesDiv.appendChild(messageElement);
-
-        // Scroll to the bottom after the message is added
-        setTimeout(scrollToBottom, 100);
-
-        // Get the current timestamp
-        const currentTimestamp = new Date();
-        const messageTimestamp = new Date(message.timestamp);
-
-        // Calculate the time difference in seconds
-        const timeDiff = (currentTimestamp - messageTimestamp) / 1000; // Difference in seconds
-
-        // Show a notification only if the message was posted within the last second
-        if (Notification.permission === "granted" && timeDiff <= 1) {
-            const notification = new Notification("New Message in Group Chat", {
-                body: message.username + ": " + message.text,
-                icon: "https://www.example.com/icon.png",  // Optional: replace with your custom icon URL
-            });
+    // Prevent access to hiddenContent and Games Section if not logged in
+    document.addEventListener("DOMContentLoaded", function () {
+        if (!loggedInUsername) {
+            hiddenContent.style.display = "none";
+            loginForm.style.display = "block";
         }
     });
 
-    // Function to scroll to the bottom
-    function scrollToBottom() {
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    function playSound(soundFile) {
-        const audio = new Audio(soundFile);
-        audio.play();
-    }
-
-    console.log("Script loaded successfully!"); // Debugging
-</script>
+    console.log("Script loaded successfully!");
+    </script>
 </body>
 </html>
