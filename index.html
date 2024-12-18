@@ -45,7 +45,7 @@
             border-radius: 10px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* This should ensure the messages stack correctly */
         }
 
         .message {
@@ -106,7 +106,7 @@
 
         .container {
             display: flex;
-            flex-direction: row;
+            flex-direction: row; /* Stack the chat and soundboard sections horizontally */
             justify-content: center;
             align-items: flex-start;
             width: 100%;
@@ -115,7 +115,7 @@
 
         .chat-section {
             flex: 1;
-            margin-right: 20px;
+            margin-right: 20px; /* Add some space between chat and soundboard */
         }
 
         .soundboard-section {
@@ -131,11 +131,23 @@
             text-align: center;
         }
 
-        .games-section {
+        /* Tetris section */
+        #tetrisButton {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
             text-align: center;
-            margin-top: 30px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
         }
 
+        #tetrisButton:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -165,7 +177,7 @@
                 <h1>Group Chat</h1>
                 <p>use your real name, identity theft is a felony</p>
                 <div id="messages"></div>
-                <label for="messageInput">message:</label>
+                <label for="messageInput">Message:</label>
                 <input type="text" id="messageInput" placeholder="Message">
                 <button onclick="sendMessage()">Send</button>
             </div>
@@ -188,11 +200,9 @@
             </div>
         </div>
 
-        <!-- Games Section -->
-        <div class="games-section">
-            <h2>Games</h2>
-            <button id="tetrisButton" onclick="window.open('https://example.com/tetris', '_blank')">Play Tetris</button>
-        </div>
+        <!-- Tetris Section -->
+        <a id="tetrisButton" href="about:blank" onclick="openTetris()">Play Tetris</a>
+
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -248,48 +258,46 @@
             if (users[username] && users[username] === password) {
                 loginForm.style.display = 'none';
                 hiddenContent.style.display = 'block';
-                errorMessage.style.display = 'none';
                 loggedInUsername = username;
-                setTimeout(scrollToBottom, 100); // Auto-scroll to the bottom
-
-                // Update Tetris button link after login
-                tetrisButton.addEventListener('click', function() {
-                    window.location.href = "about:blank";
-                });
+                errorMessage.style.display = 'none';
             } else {
                 errorMessage.style.display = 'block';
             }
         });
 
         function sendMessage() {
-            const messageText = messageInput.value;
-            if (messageText.trim()) {
+            const message = messageInput.value.trim();
+            if (message !== "") {
                 const messageData = {
                     username: loggedInUsername,
-                    text: messageText
+                    message: message
                 };
                 database.ref('messages').push(messageData);
-                messageInput.value = '';
-                scrollToBottom();
+                messageInput.value = "";  // Clear input field
             }
         }
 
-        function scrollToBottom() {
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        function playSound(soundFile) {
-            const audio = new Audio(soundFile);
+        function playSound(file) {
+            var audio = new Audio(file);
             audio.play();
         }
 
+        function openTetris() {
+            if (loggedInUsername) {
+                window.open('tetrisgame.html', '_blank');
+            } else {
+                alert("Please log in first.");
+            }
+        }
+
+        // Fetch and display messages from Firebase
         database.ref('messages').on('child_added', function(snapshot) {
             const messageData = snapshot.val();
             const messageElement = document.createElement('div');
             messageElement.classList.add('message');
-            messageElement.innerHTML = `<strong>${messageData.username}:</strong> ${messageData.text}`;
+            messageElement.textContent = `${messageData.username}: ${messageData.message}`;
             messagesDiv.appendChild(messageElement);
-            scrollToBottom();
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;  // Scroll to the bottom
         });
     </script>
 </body>
