@@ -33,25 +33,6 @@
             text-align: center;
         }
 
-        #messages {
-            width: 100%;
-            max-width: 500px;
-            height: 50vh;
-            overflow-y: auto;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .message {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-        }
-
         input[type="text"], input[type="password"] {
             width: 80%;
             padding: 10px;
@@ -71,37 +52,9 @@
             color: white;
         }
 
-        .soundboard {
-            display: grid;
-            grid-template-columns: repeat(4, 150px);
-            grid-gap: 10px;
-            justify-items: center;
-            margin-top: 30px;
-        }
-
-        .sound-button {
-            padding: 20px;
-            font-size: 16px;
-            text-align: center;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .sound-button:hover {
-            background-color: #45a049;
-        }
-
         #errorMessage {
             color: red;
             display: none;
-        }
-
-        h1 {
-            text-align: center;
         }
     </style>
 </head>
@@ -125,48 +78,18 @@
     <!-- Hidden Content (Visible after login) -->
     <div id="hiddenContent">
         <h3>Enjoy your stay!</h3>
-
-        <!-- Chat Section -->
-        <h1>Group Chat</h1>
-        <p>Use your real name, identity theft is a felony.</p>
-        <div id="messages"></div>
-        <label for="messageInput">Message:</label>
-        <input type="text" id="messageInput" placeholder="Message">
-        <button onclick="sendMessage()">Send</button>
-
-        <!-- Soundboard Section -->
         <h1>Soundboard</h1>
-        <div class="soundboard">
-            <button class="sound-button" onclick="playSound('sounds/sound1.mp3')">Vine Boom</button>
-            <button class="sound-button" onclick="playSound('sounds/sound2.mp3')">Taco Bell</button>
-            <button class="sound-button" onclick="playSound('sounds/sound3.mp3')">Metal Pipe</button>
-            <button class="sound-button" onclick="playSound('sounds/sound4.mp3')">Bruh</button>
-        </div>
-
-        <!-- Games Section -->
+        <button onclick="playSound('sounds/sound1.mp3')">Vine Boom</button>
+        <button onclick="playSound('sounds/sound2.mp3')">Taco Bell</button>
+        <button onclick="playSound('sounds/sound3.mp3')">Metal Pipe</button>
+        <button onclick="playSound('sounds/sound4.mp3')">Bruh</button>
         <h1>Games</h1>
         <button onclick="openTetris()">Play Tetris!</button>
         <button onclick="openPong()">Play Pong!</button>
         <button onclick="openMario()">Play Mario!</button>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
-            authDomain: "groupchat-5a13b.firebaseapp.com",
-            databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
-            projectId: "groupchat-5a13b",
-            storageBucket: "groupchat-5a13b.appspot.com",
-            messagingSenderId: "223221913801",
-            appId: "1:223221913801:web:7e651c2dcc436608bd1518",
-            measurementId: "G-SHC0GXX7MH"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
         // User credentials
         const users = {
             "DevinDaboi": "IEAT31415",
@@ -174,14 +97,10 @@
             "migueel": "tacobell1"
         };
 
-        let currentUser = "";
-
         // DOM Elements
         const loginForm = document.getElementById('loginForm');
         const hiddenContent = document.getElementById('hiddenContent');
         const errorMessage = document.getElementById('errorMessage');
-        const messageInput = document.getElementById('messageInput');
-        const messagesDiv = document.getElementById('messages');
 
         // Handle login
         loginForm.addEventListener('submit', () => {
@@ -189,38 +108,12 @@
             const password = document.getElementById('password').value.trim();
 
             if (users[username] && users[username] === password) {
-                currentUser = username;
                 loginForm.style.display = 'none';
                 hiddenContent.style.display = 'block';
                 errorMessage.style.display = 'none';
             } else {
                 errorMessage.style.display = 'block';
             }
-        });
-
-        // Chat functionality
-        function sendMessage() {
-            const messageText = messageInput.value.trim();
-            if (messageText && currentUser) {
-                const messageData = {
-                    username: currentUser,
-                    message: messageText,
-                    timestamp: new Date().toLocaleString()
-                };
-                database.ref('messages').push(messageData);
-                messageInput.value = '';
-            }
-        }
-
-        database.ref('messages').on('child_added', (snapshot) => {
-            const messageData = snapshot.val();
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            messageElement.innerText = `${messageData.username}: ${messageData.message}`;
-            messagesDiv.appendChild(messageElement);
-
-            // Auto-scroll to the bottom
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
 
         // Play sound
