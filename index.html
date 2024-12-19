@@ -33,9 +33,23 @@
             text-align: center;
         }
 
-        #errorMessage {
-            color: red;
-            display: none;
+        #messages {
+            width: 100%;
+            max-width: 500px;
+            height: 50vh;
+            overflow-y: auto;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
         }
 
         input[type="text"], input[type="password"] {
@@ -55,6 +69,35 @@
             border: none;
             background-color: #4CAF50;
             color: white;
+        }
+
+        .soundboard {
+            display: grid;
+            grid-template-columns: repeat(4, 150px);
+            grid-gap: 10px;
+            justify-items: center;
+            margin-top: 30px;
+        }
+
+        .sound-button {
+            padding: 20px;
+            font-size: 16px;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .sound-button:hover {
+            background-color: #45a049;
+        }
+
+        #errorMessage {
+            color: red;
+            display: none;
         }
 
         h1 {
@@ -82,44 +125,116 @@
     <!-- Hidden Content (Visible after login) -->
     <div id="hiddenContent">
         <h3>Enjoy your stay!</h3>
-        <p>Welcome to the hidden section of DevinDaboiCorp!</p>
+
+        <!-- Chat Section -->
+        <h1>Group Chat</h1>
+        <p>Use your real name, identity theft is a felony.</p>
+        <div id="messages"></div>
+        <label for="messageInput">Message:</label>
+        <input type="text" id="messageInput" placeholder="Message">
+        <button onclick="sendMessage()">Send</button>
+
+        <!-- Soundboard Section -->
+        <h1>Soundboard</h1>
+        <div class="soundboard">
+            <button class="sound-button" onclick="playSound('sounds/sound1.mp3')">Vine Boom</button>
+            <button class="sound-button" onclick="playSound('sounds/sound2.mp3')">Taco Bell</button>
+            <button class="sound-button" onclick="playSound('sounds/sound3.mp3')">Metal Pipe</button>
+            <button class="sound-button" onclick="playSound('sounds/sound4.mp3')">Bruh</button>
+        </div>
+
+        <!-- Games Section -->
+        <h1>Games</h1>
+        <button onclick="openTetris()">Play Tetris!</button>
+        <button onclick="openPong()">Play Pong!</button>
+        <button onclick="openMario()">Play Mario!</button>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
+            authDomain: "groupchat-5a13b.firebaseapp.com",
+            databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
+            projectId: "groupchat-5a13b",
+            storageBucket: "groupchat-5a13b.appspot.com",
+            messagingSenderId: "223221913801",
+            appId: "1:223221913801:web:7e651c2dcc436608bd1518",
+            measurementId: "G-SHC0GXX7MH"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         // User credentials
         const users = {
             "DevinDaboi": "IEAT31415",
             "Caspianoregiano": "JesusIsLord",
-            "migueel": "tacobell1",
-            "TheRealSlimShady": "blackpython11",
-            "Spamton1997": "Ilovemonkeys",
-            "Siu": "Ronaldo",
-            "steeevoh": "nothisispatrick",
-            "Doge": "toktik",
-            "Silas": "sUper",
-            "Frederick": "voyager-3",
-            "Myst": "lucy123",
-            "user3": "password3"
+            "migueel": "tacobell1"
         };
 
         // DOM Elements
         const loginForm = document.getElementById('loginForm');
         const hiddenContent = document.getElementById('hiddenContent');
         const errorMessage = document.getElementById('errorMessage');
+        const messageInput = document.getElementById('messageInput');
+        const messagesDiv = document.getElementById('messages');
 
-        loginForm.addEventListener('submit', function(event) {
+        // Handle login
+        loginForm.addEventListener('submit', () => {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
 
             if (users[username] && users[username] === password) {
-                loginForm.style.display = 'none'; // Hide login form
-                hiddenContent.style.display = 'block'; // Show hidden content
-                errorMessage.style.display = 'none'; // Hide error message
+                loginForm.style.display = 'none';
+                hiddenContent.style.display = 'block';
+                errorMessage.style.display = 'none';
             } else {
-                errorMessage.style.display = 'block'; // Show error message
+                errorMessage.style.display = 'block';
             }
         });
-    </script>
 
+        // Chat functionality
+        function sendMessage() {
+            const messageText = messageInput.value.trim();
+            if (messageText) {
+                const messageData = {
+                    username: "User",
+                    message: messageText,
+                    timestamp: new Date().toLocaleString()
+                };
+                database.ref('messages').push(messageData);
+                messageInput.value = '';
+            }
+        }
+
+        database.ref('messages').on('child_added', (snapshot) => {
+            const messageData = snapshot.val();
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.innerText = `${messageData.username}: ${messageData.message}`;
+            messagesDiv.appendChild(messageElement);
+        });
+
+        // Play sound
+        function playSound(soundFile) {
+            const audio = new Audio(soundFile);
+            audio.play();
+        }
+
+        // Game functions
+        function openTetris() {
+            window.open("Tetris/tetrisgame.html");
+        }
+
+        function openPong() {
+            window.open("Pong/pong.html");
+        }
+
+        function openMario() {
+            window.open("Mario/mario.html");
+        }
+    </script>
 </body>
 </html>
