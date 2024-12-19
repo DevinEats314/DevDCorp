@@ -245,7 +245,7 @@
         const password = document.getElementById('password').value;
 
         if (users[username] && users[username] === password) {
-            loginForm.style.display = 'none';
+            loginForm.style.display = 'none
             hiddenContent.style.display = 'block';
             errorMessage.style.display = 'none';
 
@@ -340,6 +340,32 @@
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
     </script>
+    <script>
+    // Redirect function
+    function redirectToNoPeeking() {
+        window.location.href = "no-peeking.html";
+    }
+
+    // Disable right-click (context menu)
+    document.addEventListener("contextmenu", (event) => {
+        event.preventDefault();
+        redirectToNoPeeking();
+    });
+
+    // Disable specific key combinations
+    document.addEventListener("keydown", (event) => {
+        // Check for common developer tools shortcuts
+        if (
+            event.key === "F12" || // F12
+            (event.ctrlKey && event.shiftKey && event.key === "I") || // Ctrl+Shift+I
+            (event.ctrlKey && event.key === "U") || // Ctrl+U
+            (event.ctrlKey && event.shiftKey && event.key === "J") // Ctrl+Shift+J
+        ) {
+            event.preventDefault();
+            redirectToNoPeeking();
+        }
+    });
+</script>
 
 </body>
 </html>
