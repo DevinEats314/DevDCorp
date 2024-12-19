@@ -346,20 +346,22 @@
         window.location.href = "no-peeking.html";
     }
 
-    // Disable right-click (context menu)
+    // Disable Inspect Element from context menu
     document.addEventListener("contextmenu", (event) => {
-        event.preventDefault();
-        redirectToNoPeeking();
+        if (event.target.tagName === "HTML" || event.target.tagName === "BODY") {
+            // Prevent the right-click context menu on the page background
+            event.preventDefault();
+            redirectToNoPeeking();
+        }
     });
 
-    // Disable specific key combinations
+    // Disable specific key combinations for developer tools
     document.addEventListener("keydown", (event) => {
-        // Check for common developer tools shortcuts
         if (
             event.key === "F12" || // F12
             (event.ctrlKey && event.shiftKey && event.key === "I") || // Ctrl+Shift+I
-            (event.ctrlKey && event.key === "U") || // Ctrl+U
-            (event.ctrlKey && event.shiftKey && event.key === "J") // Ctrl+Shift+J
+            (event.ctrlKey && event.shiftKey && event.key === "J") || // Ctrl+Shift+J
+            (event.ctrlKey && event.key === "U") // Ctrl+U
         ) {
             event.preventDefault();
             redirectToNoPeeking();
