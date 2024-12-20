@@ -13,7 +13,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #f4f4f4;
+            background-color: #f4f4f4;f
         }
 
         #welcomeMessage {
@@ -33,12 +33,13 @@
             text-align: center;
         }
 
+        /* Chat Section */
         #messages {
             width: 100%;
             max-width: 500px;
             height: 50vh;
             overflow-y: auto;
-            margin: 20px auto;
+            margin-top: 20px;
             padding: 10px;
             background-color: #fff;
             border-radius: 10px;
@@ -54,19 +55,13 @@
             border-radius: 5px;
         }
 
-        input[type="text"], input[type="password"] {
+        input[type="text"] {
             width: 80%;
-            max-width: 300px;
             padding: 10px;
             font-size: 16px;
             margin-top: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
-        }
-
-        #messageInput {
-            width: 70%;
-            max-width: 400px;
         }
 
         button {
@@ -77,26 +72,15 @@
             border: none;
             background-color: #4CAF50;
             color: white;
-            cursor: pointer;
         }
 
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .soundboard-container {
-            display: flex;
-            margin-top: 30px;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-        }
-
+        /* Soundboard Section */
         .soundboard {
             display: grid;
             grid-template-columns: repeat(4, 150px);
             grid-gap: 10px;
             justify-items: center;
+            margin-top: 30px;
         }
 
         .sound-button {
@@ -120,42 +104,33 @@
             display: none;
         }
 
-        .game-section {
+        .container {
             display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .game-buttons button {
-            margin: 10px 0;
-            padding: 15px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .game-buttons button:hover {
-            background-color: #45a049;
-        }
-
-        h1, h2 {
-            text-align: center;
-        }
-
-        .chat-input {
-            display: flex;
+            flex-direction: row; 
             justify-content: center;
-            gap: 10px;
+            align-items: flex-start;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .chat-section {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .soundboard-section {
+            flex: 1;
+        }
+        
+        label {
+            font-size: 16px;
             margin-top: 10px;
         }
+
+        h1 {
+            text-align: center;
+        }
+        
     </style>
 </head>
 <body>
@@ -165,11 +140,9 @@
     <!-- Login Form -->
     <form id="loginForm">
         <label for="username">Username:</label>
-        <br>
         <input type="text" id="username" required>
         <br>
         <label for="password">Password:</label>
-        <br>
         <input type="password" id="password" required>
         <br>
         <button type="submit">Login</button>
@@ -181,47 +154,192 @@
     <div id="hiddenContent">
         <h3>Enjoy your stay!</h3>
 
-        <div class="chat-section">
-            <h1>Group Chat</h1>
-            <p>Use your real name; identity theft is a felony.</p>
-            <div id="messages"></div>
-            <div class="chat-input">
-                <label for="messageInput">Message:</label>
-                <input type="text" id="messageInput" placeholder="Type a message">
+        <div class="container">
+            <!-- Chat Section -->
+            <div class="chat-section">
+                <h1>Group Chat</h1>
+                <p>use your real name, identity theft is a felony</p>
+                <div id="messages"></div>
+                <label for="messageInput">message:</label>
+                <input type="text" id="messageInput" placeholder="Message">
                 <button onclick="sendMessage()">Send</button>
             </div>
-        </div>
 
-        <!-- Soundboard & Games Section -->
-        <div class="soundboard-container">
-            <!-- Soundboard -->
-            <div class="soundboard">
-                <button class="sound-button" onclick="playSound('sounds/sound1.mp3')">Vine Boom</button>
-                <button class="sound-button" onclick="playSound('sounds/sound2.mp3')">Taco Bell</button>
-                <button class="sound-button" onclick="playSound('sounds/sound3.mp3')">Metal Pipe</button>
-                <button class="sound-button" onclick="playSound('sounds/sound4.mp3')">Bruh</button>
-                <button class="sound-button" onclick="playSound('sounds/sound5.mp3')">GET OUT</button>
-                <button class="sound-button" onclick="playSound('sounds/sound6.mp3')">Waterphone</button>
-                <button class="sound-button" onclick="playSound('sounds/sound7.mp3')">Alarm</button>
-                <button class="sound-button" onclick="playSound('sounds/sound8.mp3')">Reverb Fart</button>
-                <button class="sound-button" onclick="playSound('sounds/sound9.mp3')">Bruh DAYYAYAAA</button>
-                <button class="sound-button" onclick="playSound('sounds/sound10.mp3')">Campus Lockdown</button>
-            </div>
-
-            <!-- Games -->
-            <div class="game-section">
-                <h1>Games</h1>
-                <div class="game-buttons">
-                    <button onclick="openTetris()">Play Tetris!</button>
-                    <button onclick="openPong()">Play Pong!</button>
-                    <button onclick="openMario()">Play Mario!</button>
+            <!-- Soundboard Section -->
+            <div class="soundboard-section">
+                <h1>Soundboard</h1>
+                <div class="soundboard">
+                    <button class="sound-button" onclick="playSound('sounds/sound1.mp3')">Vine Boom</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound2.mp3')">Taco Bell</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound3.mp3')">Metal Pipe</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound4.mp3')">Bruh</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound5.mp3')">GET OUT</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound6.mp3')">Waterphone</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound7.mp3')">Alarm</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound8.mp3')">Reverb Fart</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound9.mp3')">Bruh DAYYAYAAA</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound10.mp3')">The campus is now in lockdown</button>
                 </div>
-            </div>
-        </div>
-    </div>
+                </div>
 
+        <div class="game-section">
+    <h1>Games</h1>
+    <!-- Wrapper div for the game buttons -->
+    <div class="game-buttons">
+        <button onclick="openTetris()">Play Tetris!</button>
+        <button onclick="openPong()">Play Pong!</button>
+        <button onclick="openMario()">Play Mario!</button>
+    </div>
+</div>
+            </div>
+                    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        // Same script as before
+    console.log("Starting script..."); // Debugging
+
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
+        authDomain: "groupchat-5a13b.firebaseapp.com",
+        databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
+        projectId: "groupchat-5a13b",
+        storageBucket: "groupchat-5a13b.firebasestorage.app",
+        messagingSenderId: "223221913801",
+        appId: "1:223221913801:web:7e651c2dcc436608bd1518",
+        measurementId: "G-SHC0GXX7MH"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
+
+    // DOM Elements
+    const messagesDiv = document.getElementById('messages');
+    const messageInput = document.getElementById('messageInput');
+    const errorMessage = document.getElementById('errorMessage');
+    const loginForm = document.getElementById('loginForm');
+    const hiddenContent = document.getElementById('hiddenContent');
+
+    // Global variable to store logged-in username
+    let loggedInUsername = null;
+
+    const users = {
+        "DevinDaboi": "IEAT31415",
+        "Caspianoregiano": "JesusIsLord",
+        "migueel": "tacobell1",
+        "TheRealSlimShady": "blackpython11",
+        "Spamton1997": "Ilovemonkeys",
+        "Siu": "Ronaldo",
+        "steeevoh": "nothisispatrick",
+        "Doge": "toktik",
+        "Silas": "sUper",
+        "Frederick": "voyager-3",
+        "Myst": "lucy123",
+        "user3": "password3"
+    };
+
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (users[username] && users[username] === password) {
+            loginForm.style.display = 'none';
+            hiddenContent.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            // Set the logged-in username
+            loggedInUsername = username;
+
+            // Ensure the chat starts at the bottom on initial load
+            setTimeout(scrollToBottom, 100);  // Small delay to allow the DOM to load
+        } else {
+            errorMessage.style.display = 'block';
+        }
+    });
+
+    // Set up Notification permission
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+    }
+
+    function sendMessage() {
+        const messageText = messageInput.value.trim();
+
+        if (messageText !== "") {
+            const timestamp = new Date().toLocaleString();  // Get current timestamp
+            const messageData = {
+                username: loggedInUsername,
+                message: messageText,
+                timestamp: timestamp
+            };
+
+            // Send to Firebase
+            database.ref('messages').push(messageData);
+            messageInput.value = '';  // Clear input field
+        }
+    }
+
+    function playSound(soundFile) {
+        const audio = new Audio(soundFile);
+        audio.play();
+    }
+
+    function openTetris() {
+        var win = window.open()
+        var url = "Tetris/tetrisgame.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function openPong() {
+        var win = window.open()
+        var url = "Pong/pong.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function openMario() {
+        var win = window.open()
+        var url = "Mario/Mario.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+
+    // Fetch and display chat messages from Firebase
+    database.ref('messages').on('child_added', function(snapshot) {
+        const messageData = snapshot.val();
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.innerHTML = `<strong>${messageData.username}</strong>: ${messageData.message} <span style="font-size: 0.8em; color: gray;">(${messageData.timestamp})</span>`;
+        messagesDiv.appendChild(messageElement);
+        scrollToBottom();
+    });
+
+    function scrollToBottom() {
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
     </script>
+
 </body>
 </html>
