@@ -78,12 +78,19 @@
             background-color: #45a049;
         }
 
+        .soundboard-container {
+            display: flex;
+            margin-top: 30px;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
         .soundboard {
             display: grid;
             grid-template-columns: repeat(4, 150px);
             grid-gap: 10px;
             justify-items: center;
-            margin-top: 30px;
         }
 
         .sound-button {
@@ -107,30 +114,19 @@
             display: none;
         }
 
-        .container {
-            display: flex;
-            flex-direction: row; 
-            justify-content: center;
-            align-items: flex-start;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .chat-section {
-            flex: 1;
-            margin-right: 20px;
-        }
-
-        .soundboard-section {
-            flex: 1;
-        }
-
         .game-section {
-            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
 
         .game-buttons button {
-            margin: 10px;
+            margin: 10px 0;
             padding: 15px;
             font-size: 16px;
             background-color: #4CAF50;
@@ -170,42 +166,39 @@
     <div id="hiddenContent">
         <h3>Enjoy your stay!</h3>
 
-        <div class="container">
-            <!-- Chat Section -->
-            <div class="chat-section">
-                <h1>Group Chat</h1>
-                <p>Use your real name, identity theft is a felony</p>
-                <div id="messages"></div>
-                <label for="messageInput">Message:</label>
-                <input type="text" id="messageInput" placeholder="Type a message">
-                <button onclick="sendMessage()">Send</button>
-            </div>
-
-            <!-- Soundboard Section -->
-            <div class="soundboard-section">
-                <h1>Soundboard</h1>
-                <div class="soundboard">
-                    <button class="sound-button" onclick="playSound('sounds/sound1.mp3')">Vine Boom</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound2.mp3')">Taco Bell</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound3.mp3')">Metal Pipe</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound4.mp3')">Bruh</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound5.mp3')">GET OUT</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound6.mp3')">Waterphone</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound7.mp3')">Alarm</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound8.mp3')">Reverb Fart</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound9.mp3')">Bruh DAYYAYAAA</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound10.mp3')">Campus Lockdown</button>
-                </div>
-            </div>
+        <div class="chat-section">
+            <h1>Group Chat</h1>
+            <p>Use your real name, identity theft is a felony</p>
+            <div id="messages"></div>
+            <label for="messageInput">Message:</label>
+            <input type="text" id="messageInput" placeholder="Type a message">
+            <button onclick="sendMessage()">Send</button>
         </div>
 
-        <!-- Games Section -->
-        <div class="game-section">
-            <h1>Games</h1>
-            <div class="game-buttons">
-                <button onclick="openTetris()">Play Tetris!</button>
-                <button onclick="openPong()">Play Pong!</button>
-                <button onclick="openMario()">Play Mario!</button>
+        <!-- Soundboard & Games Section -->
+        <div class="soundboard-container">
+            <!-- Soundboard -->
+            <div class="soundboard">
+                <button class="sound-button" onclick="playSound('sounds/sound1.mp3')">Vine Boom</button>
+                <button class="sound-button" onclick="playSound('sounds/sound2.mp3')">Taco Bell</button>
+                <button class="sound-button" onclick="playSound('sounds/sound3.mp3')">Metal Pipe</button>
+                <button class="sound-button" onclick="playSound('sounds/sound4.mp3')">Bruh</button>
+                <button class="sound-button" onclick="playSound('sounds/sound5.mp3')">GET OUT</button>
+                <button class="sound-button" onclick="playSound('sounds/sound6.mp3')">Waterphone</button>
+                <button class="sound-button" onclick="playSound('sounds/sound7.mp3')">Alarm</button>
+                <button class="sound-button" onclick="playSound('sounds/sound8.mp3')">Reverb Fart</button>
+                <button class="sound-button" onclick="playSound('sounds/sound9.mp3')">Bruh DAYYAYAAA</button>
+                <button class="sound-button" onclick="playSound('sounds/sound10.mp3')">Campus Lockdown</button>
+            </div>
+
+            <!-- Games -->
+            <div class="game-section">
+                <h1>Games</h1>
+                <div class="game-buttons">
+                    <button onclick="openTetris()">Play Tetris!</button>
+                    <button onclick="openPong()">Play Pong!</button>
+                    <button onclick="openMario()">Play Mario!</button>
+                </div>
             </div>
         </div>
     </div>
