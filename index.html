@@ -38,7 +38,7 @@
             max-width: 500px;
             height: 50vh;
             overflow-y: auto;
-            margin-top: 20px;
+            margin: 20px auto;
             padding: 10px;
             background-color: #fff;
             border-radius: 10px;
@@ -56,11 +56,17 @@
 
         input[type="text"], input[type="password"] {
             width: 80%;
+            max-width: 300px;
             padding: 10px;
             font-size: 16px;
             margin-top: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
+        }
+
+        #messageInput {
+            width: 70%;
+            max-width: 400px;
         }
 
         button {
@@ -139,9 +145,16 @@
         .game-buttons button:hover {
             background-color: #45a049;
         }
-        
-        h1 {
+
+        h1, h2 {
             text-align: center;
+        }
+
+        .chat-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -152,9 +165,11 @@
     <!-- Login Form -->
     <form id="loginForm">
         <label for="username">Username:</label>
+        <br>
         <input type="text" id="username" required>
         <br>
         <label for="password">Password:</label>
+        <br>
         <input type="password" id="password" required>
         <br>
         <button type="submit">Login</button>
@@ -168,11 +183,13 @@
 
         <div class="chat-section">
             <h1>Group Chat</h1>
-            <p>Use your real name, identity theft is a felony</p>
+            <p>Use your real name; identity theft is a felony.</p>
             <div id="messages"></div>
-            <label for="messageInput">Message:</label>
-            <input type="text" id="messageInput" placeholder="Type a message">
-            <button onclick="sendMessage()">Send</button>
+            <div class="chat-input">
+                <label for="messageInput">Message:</label>
+                <input type="text" id="messageInput" placeholder="Type a message">
+                <button onclick="sendMessage()">Send</button>
+            </div>
         </div>
 
         <!-- Soundboard & Games Section -->
@@ -203,82 +220,56 @@
         </div>
     </div>
 
-    <!-- Firebase & Script -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        // Firebase configuration
-        var firebaseConfig = {
-            apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
-            authDomain: "groupchat-5a13b.firebaseapp.com",
-            databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
-            projectId: "groupchat-5a13b",
-            storageBucket: "groupchat-5a13b.appspot.com",
-            messagingSenderId: "223221913801",
-            appId: "1:223221913801:web:7e651c2dcc436608bd1518"
-        };
-        firebase.initializeApp(firebaseConfig);
-        var database = firebase.database();
+        // Login validation
+        const loginForm = document.getElementById("loginForm");
+        const hiddenContent = document.getElementById("hiddenContent");
+        const errorMessage = document.getElementById("errorMessage");
 
-        const users = {
-            "DevinDaboi": "IEAT31415",
-            "Caspianoregiano": "JesusIsLord",
-            "migueel": "tacobell1",
-            "TheRealSlimShady": "blackpython11",
-            "Spamton1997": "Ilovemonkeys"
-        };
-
-        let loggedInUsername = null;
-
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+        loginForm.addEventListener("submit", function (e) {
+            e.preventDefault();
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            if (users[username] === password) {
-                loggedInUsername = username;
-                document.getElementById("loginForm").style.display = "none";
-                document.getElementById("hiddenContent").style.display = "block";
+            if (username === "admin" && password === "password") {
+                loginForm.style.display = "none";
+                hiddenContent.style.display = "block";
             } else {
-                document.getElementById("errorMessage").style.display = "block";
+                errorMessage.style.display = "block";
             }
         });
 
+        // Chat functionality
         function sendMessage() {
-            const message = document.getElementById("messageInput").value.trim();
-            if (message) {
-                database.ref("messages").push({
-                    username: loggedInUsername,
-                    message,
-                    timestamp: new Date().toLocaleString()
-                });
-                document.getElementById("messageInput").value = "";
+            const messageInput = document.getElementById("messageInput");
+            const messages = document.getElementById("messages");
+
+            if (messageInput.value.trim() !== "") {
+                const newMessage = document.createElement("div");
+                newMessage.className = "message";
+                newMessage.textContent = messageInput.value;
+                messages.appendChild(newMessage);
+                messageInput.value = "";
             }
         }
 
-        database.ref("messages").on("child_added", function(snapshot) {
-            const data = snapshot.val();
-            const div = document.createElement("div");
-            div.className = "message";
-            div.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
-            document.getElementById("messages").appendChild(div);
-        });
-
-        function playSound(soundFile) {
-            const audio = new Audio(soundFile);
+        // Play sounds
+        function playSound(soundPath) {
+            const audio = new Audio(soundPath);
             audio.play();
         }
 
+        // Open game windows
         function openTetris() {
-            window.open("https://tetris.com/", "_blank");
+            window.open("https://tetris.com/play-tetris", "_blank");
         }
 
         function openPong() {
-            window.open("https://ponggame.org/", "_blank");
+            window.open("https://ponggame.org", "_blank");
         }
 
         function openMario() {
-            window.open("https://supermario-game.com/", "_blank");
+            window.open("https://supermarioemulator.com", "_blank");
         }
     </script>
 </body>
