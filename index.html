@@ -130,6 +130,28 @@
         h1 {
             text-align: center;
         }
+
+        /* Games Section */
+        .games {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .game-link {
+            text-decoration: none;
+            padding: 15px;
+            background-color: #2196F3;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .game-link:hover {
+            background-color: #1976D2;
+        }
     </style>
 </head>
 <body>
@@ -157,9 +179,9 @@
             <!-- Chat Section -->
             <div class="chat-section">
                 <h1>Group Chat</h1>
-                <p>use your real name, identity theft is a felony</p>
+                <p>Use your real name, identity theft is a felony.</p>
                 <div id="messages"></div>
-                <label for="messageInput">message:</label>
+                <label for="messageInput">Message:</label>
                 <input type="text" id="messageInput" placeholder="Message">
                 <button onclick="sendMessage()">Send</button>
             </div>
@@ -168,12 +190,23 @@
             <div class="soundboard-section">
                 <h1>Soundboard</h1>
                 <div class="soundboard">
-                    <button class="sound-button" onclick="playSound('sounds/sound1.mp3')">Vine Boom</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound2.mp3')">Taco Bell</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound3.mp3')">Metal Pipe</button>
-                    <button class="sound-button" onclick="playSound('sounds/sound4.mp3')">Bruh</button>
+                    <button class="sound-button" onclick="playSound('sounds/vine-boom.mp3')">Vine Boom</button>
+                    <button class="sound-button" onclick="playSound('sounds/taco-bell.mp3')">Taco Bell</button>
+                    <button class="sound-button" onclick="playSound('sounds/metal-pipe.mp3')">Metal Pipe</button>
+                    <button class="sound-button" onclick="playSound('sounds/bruh.mp3')">Bruh</button>
+                    <button class="sound-button" onclick="playSound('sounds/record-scratch.mp3')">Record Scratch</button>
+                    <button class="sound-button" onclick="playSound('sounds/clap.mp3')">Clap</button>
+                    <button class="sound-button" onclick="playSound('sounds/cheer.mp3')">Cheer</button>
+                    <button class="sound-button" onclick="playSound('sounds/boo.mp3')">Boo</button>
                 </div>
             </div>
+        </div>
+
+        <!-- Games Section -->
+        <div class="games">
+            <a class="game-link" href="https://example.com/game1" target="_blank">Game 1</a>
+            <a class="game-link" href="https://example.com/game2" target="_blank">Game 2</a>
+            <a class="game-link" href="https://example.com/game3" target="_blank">Game 3</a>
         </div>
     </div>
 
@@ -212,6 +245,7 @@
                 messageDiv.className = 'message';
                 messageDiv.innerHTML = `<strong>${loggedInUsername}</strong>: ${message}`;
                 messagesDiv.appendChild(messageDiv);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight; // Fix scrolling
                 messageInput.value = '';
             }
         }
