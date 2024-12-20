@@ -33,7 +33,6 @@
             text-align: center;
         }
 
-        /* Chat Section */
         #messages {
             width: 100%;
             max-width: 500px;
@@ -55,7 +54,7 @@
             border-radius: 5px;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="password"] {
             width: 80%;
             padding: 10px;
             font-size: 16px;
@@ -72,9 +71,13 @@
             border: none;
             background-color: #4CAF50;
             color: white;
+            cursor: pointer;
         }
 
-        /* Soundboard Section */
+        button:hover {
+            background-color: #45a049;
+        }
+
         .soundboard {
             display: grid;
             grid-template-columns: repeat(4, 150px);
@@ -106,7 +109,7 @@
 
         .container {
             display: flex;
-            flex-direction: row;
+            flex-direction: row; 
             justify-content: center;
             align-items: flex-start;
             width: 100%;
@@ -122,35 +125,27 @@
             flex: 1;
         }
 
-        label {
-            font-size: 16px;
-            margin-top: 10px;
+        .game-section {
+            margin-top: 30px;
         }
 
+        .game-buttons button {
+            margin: 10px;
+            padding: 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .game-buttons button:hover {
+            background-color: #45a049;
+        }
+        
         h1 {
             text-align: center;
-        }
-
-        /* Games Section */
-        .games {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .game-link {
-            text-decoration: none;
-            padding: 15px;
-            background-color: #2196F3;
-            color: white;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .game-link:hover {
-            background-color: #1976D2;
         }
     </style>
 </head>
@@ -159,7 +154,7 @@
     <h2 id="welcomeMessage">Welcome to DevinDaboiCorp!</h2>
 
     <!-- Login Form -->
-    <form id="loginForm" action="javascript:void(0);">
+    <form id="loginForm">
         <label for="username">Username:</label>
         <input type="text" id="username" required>
         <br>
@@ -179,10 +174,10 @@
             <!-- Chat Section -->
             <div class="chat-section">
                 <h1>Group Chat</h1>
-                <p>Use your real name, identity theft is a felony.</p>
+                <p>Use your real name, identity theft is a felony</p>
                 <div id="messages"></div>
                 <label for="messageInput">Message:</label>
-                <input type="text" id="messageInput" placeholder="Message">
+                <input type="text" id="messageInput" placeholder="Type a message">
                 <button onclick="sendMessage()">Send</button>
             </div>
 
@@ -190,70 +185,108 @@
             <div class="soundboard-section">
                 <h1>Soundboard</h1>
                 <div class="soundboard">
-                    <button class="sound-button" onclick="playSound('sounds/vine-boom.mp3')">Vine Boom</button>
-                    <button class="sound-button" onclick="playSound('sounds/taco-bell.mp3')">Taco Bell</button>
-                    <button class="sound-button" onclick="playSound('sounds/metal-pipe.mp3')">Metal Pipe</button>
-                    <button class="sound-button" onclick="playSound('sounds/bruh.mp3')">Bruh</button>
-                    <button class="sound-button" onclick="playSound('sounds/record-scratch.mp3')">Record Scratch</button>
-                    <button class="sound-button" onclick="playSound('sounds/clap.mp3')">Clap</button>
-                    <button class="sound-button" onclick="playSound('sounds/cheer.mp3')">Cheer</button>
-                    <button class="sound-button" onclick="playSound('sounds/boo.mp3')">Boo</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound1.mp3')">Vine Boom</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound2.mp3')">Taco Bell</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound3.mp3')">Metal Pipe</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound4.mp3')">Bruh</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound5.mp3')">GET OUT</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound6.mp3')">Waterphone</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound7.mp3')">Alarm</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound8.mp3')">Reverb Fart</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound9.mp3')">Bruh DAYYAYAAA</button>
+                    <button class="sound-button" onclick="playSound('sounds/sound10.mp3')">Campus Lockdown</button>
                 </div>
             </div>
         </div>
 
         <!-- Games Section -->
-        <div class="games">
-            <a class="game-link" href="https://example.com/game1" target="_blank">Game 1</a>
-            <a class="game-link" href="https://example.com/game2" target="_blank">Game 2</a>
-            <a class="game-link" href="https://example.com/game3" target="_blank">Game 3</a>
+        <div class="game-section">
+            <h1>Games</h1>
+            <div class="game-buttons">
+                <button onclick="openTetris()">Play Tetris!</button>
+                <button onclick="openPong()">Play Pong!</button>
+                <button onclick="openMario()">Play Mario!</button>
+            </div>
         </div>
     </div>
 
+    <!-- Firebase & Script -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
+        // Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
+            authDomain: "groupchat-5a13b.firebaseapp.com",
+            databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
+            projectId: "groupchat-5a13b",
+            storageBucket: "groupchat-5a13b.appspot.com",
+            messagingSenderId: "223221913801",
+            appId: "1:223221913801:web:7e651c2dcc436608bd1518"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+
         const users = {
             "DevinDaboi": "IEAT31415",
             "Caspianoregiano": "JesusIsLord",
-            "migueel": "tacobell1"
+            "migueel": "tacobell1",
+            "TheRealSlimShady": "blackpython11",
+            "Spamton1997": "Ilovemonkeys"
         };
 
-        const loginForm = document.getElementById('loginForm');
-        const hiddenContent = document.getElementById('hiddenContent');
-        const errorMessage = document.getElementById('errorMessage');
-        const messagesDiv = document.getElementById('messages');
-        const messageInput = document.getElementById('messageInput');
         let loggedInUsername = null;
 
-        loginForm.addEventListener('submit', () => {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
 
-            if (users[username] && users[username] === password) {
-                loginForm.style.display = 'none';
-                hiddenContent.style.display = 'block';
-                errorMessage.style.display = 'none';
+            if (users[username] === password) {
                 loggedInUsername = username;
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("hiddenContent").style.display = "block";
             } else {
-                errorMessage.style.display = 'block';
+                document.getElementById("errorMessage").style.display = "block";
             }
         });
 
         function sendMessage() {
-            const message = messageInput.value.trim();
+            const message = document.getElementById("messageInput").value.trim();
             if (message) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message';
-                messageDiv.innerHTML = `<strong>${loggedInUsername}</strong>: ${message}`;
-                messagesDiv.appendChild(messageDiv);
-                messagesDiv.scrollTop = messagesDiv.scrollHeight; // Fix scrolling
-                messageInput.value = '';
+                database.ref("messages").push({
+                    username: loggedInUsername,
+                    message,
+                    timestamp: new Date().toLocaleString()
+                });
+                document.getElementById("messageInput").value = "";
             }
         }
 
+        database.ref("messages").on("child_added", function(snapshot) {
+            const data = snapshot.val();
+            const div = document.createElement("div");
+            div.className = "message";
+            div.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
+            document.getElementById("messages").appendChild(div);
+        });
+
         function playSound(soundFile) {
-            new Audio(soundFile).play();
+            const audio = new Audio(soundFile);
+            audio.play();
+        }
+
+        function openTetris() {
+            window.open("https://tetris.com/", "_blank");
+        }
+
+        function openPong() {
+            window.open("https://ponggame.org/", "_blank");
+        }
+
+        function openMario() {
+            window.open("https://supermario-game.com/", "_blank");
         }
     </script>
-
 </body>
 </html>
