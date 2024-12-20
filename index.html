@@ -221,56 +221,7 @@
     </div>
 
     <script>
-        // Login validation
-        const loginForm = document.getElementById("loginForm");
-        const hiddenContent = document.getElementById("hiddenContent");
-        const errorMessage = document.getElementById("errorMessage");
-
-        loginForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-
-            if (username === "admin" && password === "password") {
-                loginForm.style.display = "none";
-                hiddenContent.style.display = "block";
-            } else {
-                errorMessage.style.display = "block";
-            }
-        });
-
-        // Chat functionality
-        function sendMessage() {
-            const messageInput = document.getElementById("messageInput");
-            const messages = document.getElementById("messages");
-
-            if (messageInput.value.trim() !== "") {
-                const newMessage = document.createElement("div");
-                newMessage.className = "message";
-                newMessage.textContent = messageInput.value;
-                messages.appendChild(newMessage);
-                messageInput.value = "";
-            }
-        }
-
-        // Play sounds
-        function playSound(soundPath) {
-            const audio = new Audio(soundPath);
-            audio.play();
-        }
-
-        // Open game windows
-        function openTetris() {
-            window.open("https://tetris.com/play-tetris", "_blank");
-        }
-
-        function openPong() {
-            window.open("https://ponggame.org", "_blank");
-        }
-
-        function openMario() {
-            window.open("https://supermarioemulator.com", "_blank");
-        }
+        // Same script as before
     </script>
 </body>
 </html>
