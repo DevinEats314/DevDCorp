@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windowkill Game</title>
+    <h3>This is an exe file so you have to download it instead of play it on the site</h3>
+    <p>If the .exe wont run then run the .bat to play</p>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <button id="downloadButton">Download Windowkill</button>
+
+    <script>
+        document.getElementById('downloadButton').addEventListener('click', () => {
+            const a = document.createElement('a');
+            a.href = 'win-v1.6.zip';
+            a.download = 'win-v1.6.zip';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    </script>
+</body>
+</html>
