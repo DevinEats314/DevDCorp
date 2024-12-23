@@ -4,17 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Windowkill Game</title>
-    <h3>This is an exe file so you have to download it instead of play it on the site</h3>
-    <p>If the .exe wont run then run the .bat to play</p>
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+        }
+        header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background-color: #1e3c72;
+            text-align: center;
+            padding: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        header h1 {
             margin: 0;
-            background-color: #f4f4f4;
+            font-size: 24px;
+            color: #f4f4f4;
+        }
+        .content {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .content h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .content p {
+            font-size: 16px;
+            margin-bottom: 20px;
         }
         button {
             padding: 10px 20px;
@@ -24,6 +54,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         button:hover {
             background-color: #0056b3;
@@ -31,7 +62,14 @@
     </style>
 </head>
 <body>
-    <button id="downloadButton">Download Windowkill</button>
+    <header>
+        <h1>Windowkill Game</h1>
+    </header>
+    <div class="content">
+        <h3>This is an exe file so you have to download it instead of play it on the site</h3>
+        <p>If the .exe won't run, then run the .bat to play</p>
+        <button id="downloadButton">Download Windowkill</button>
+    </div>
 
     <script>
         document.getElementById('downloadButton').addEventListener('click', () => {
