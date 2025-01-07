@@ -267,15 +267,21 @@
         "gabriel": "tacobell123"
     };
 
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+        loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-        if (users[username] === password) {
-            loggedInUsername = username;
+
+        if (users[username] && users[username] === password) {
             loginForm.style.display = 'none';
             hiddenContent.style.display = 'block';
             errorMessage.style.display = 'none';
+
+            // Set the logged-in username
+            loggedInUsername = username;
+
+            // Ensure the chat starts at the bottom on initial load
+            setTimeout(scrollToBottom, 100);  // Small delay to allow the DOM to load
         } else {
             errorMessage.style.display = 'block';
         }
