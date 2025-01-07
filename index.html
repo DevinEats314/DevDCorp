@@ -311,14 +311,72 @@
 
     // Open Movies Page
     function openMovies() {
-        window.location.href = "https://www.netflix.com"; // replace with actual movies page URL
+        var win = window.open()
+        var url = "Movies/moviespage.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
     }
 
     // Open Games
-    function openTetris() { window.location.href = "https://tetris.com"; }
-    function openPong() { window.location.href = "https://pong.com"; }
-    function openMario() { window.location.href = "https://mariogame.com"; }
-    function openWindowkill() { window.location.href = "https://windowkill.com"; }
+    function openTetris() {
+        var win = window.open()
+        var url = "Tetris/tetrisgame.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function openPong() {
+        var win = window.open()
+        var url = "Pong/pong.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function openMario() {
+        var win = window.open()
+        var url = "Mario/Mario.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function openWindowkill() {
+        var win = window.open()
+        var url = "windowkill.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
     </script>
 </body>
 </html>
