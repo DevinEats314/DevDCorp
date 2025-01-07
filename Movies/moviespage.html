@@ -55,9 +55,10 @@
         <h1>Movies</h1>
 
         <div class="movie-buttons">
-            <button class="movie-button" onclick="OpenLOTR1()">Lord of the Rings 1</button>
+            <button class="movie-button" onclick="openLOTR1()">Lord of the Rings 1</button>
         </div>
     </div>
+  
   <script>
     function openLOTR1() {
         var win = window.open()
@@ -66,12 +67,13 @@
         var iframe = document.createElement("iframe")
         iframe.style.border = "none";
         iframe.style.width = "100%";
-        iframe.style.height = "100%"
+        iframe.style.height = "100%";
         iframe.style.margin = "0";
         iframe.src = url;
         win.document.body.appendChild(iframe);
         }
     }
   </script>
+
 </body>
 </html>
