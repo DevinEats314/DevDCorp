@@ -428,5 +428,17 @@
     }
 };
     </script>
+<script> 
+document.addEventListener('contextmenu', function(e) { 
+    e.preventDefault(); 
+}); 
+</script> 
+<script> 
+document.onkeydown = function(e) { 
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) { 
+        e.preventDefault(); 
+    } 
+}; 
+</script> 
 </body>
 </html>
