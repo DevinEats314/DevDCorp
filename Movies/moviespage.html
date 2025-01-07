@@ -56,6 +56,7 @@
 
         <div class="movie-buttons">
             <button class="movie-button" onclick="openLOTR1()">Lord of the Rings 1</button>
+            <button class="movie-button" onclick="openLOTR2()">Lord of the Rings 2</button>
         </div>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSccWPkMyDIyjdzAXdyqLamGYvh1Y9qkjdBNruu2W3RR5SeQfw/viewform?usp=sf_link">Request Movies Here! (sign in with your school account to forms)</a>
     </div>
@@ -64,6 +65,19 @@
     function openLOTR1() {
         var win = window.open()
         var url = "lotr1.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%";
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+      function openLOTR2() {
+        var win = window.open()
+        var url = "lotr2.html"
         if (url) {
         var iframe = document.createElement("iframe")
         iframe.style.border = "none";
