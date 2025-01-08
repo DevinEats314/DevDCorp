@@ -230,6 +230,7 @@
                 <button onclick="open2048()">Play 2048!</button>
                 <button onclick="openCookieclicker()">Play Cookie Clicker!</button>
                 <button onclick="openRetrobowl()">Play Retrobowl!</button>
+                <button onclick="openSlope()">Play Slope!</button>
             </div>
         </div>
 
@@ -457,6 +458,19 @@
     function openRetrobowl() {
         var win = window.open()
         var url = "Retrobowl/retro.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function openSlope() {
+        var win = window.open()
+        var url = "Slope/slope.html"
         if (url) {
         var iframe = document.createElement("iframe")
         iframe.style.border = "none";
