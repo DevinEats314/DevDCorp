@@ -449,7 +449,10 @@ document.addEventListener('contextmenu', function(e) {
 </script> 
 <script> 
 document.onkeydown = function(e) { 
-    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) { 
+    if (e.key === 'F12') { 
+        e.preventDefault(); 
+    } 
+    if (e.ctrlKey && e.shiftKey && e.key === 'I') { 
         e.preventDefault(); 
     } 
 }; 
