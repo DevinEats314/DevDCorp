@@ -1,39 +1,55 @@
+// Import Firebase Database functions
+import { getDatabase, ref, onValue, set, push, remove } from "firebase/database";
+
+// Use the existing Firebase app instance
+const db = getDatabase();
+
+// Reference for the voice chat folder
+const vcRef = ref(db, "voicechat");
+
+// DOM elements
 const pushToTalkButton = document.getElementById("pushToTalk");
+const userCountDisplay = document.getElementById("userCount");
 
-// Variables to store audio stream and microphone track
-let audioStream = null;
-let audioTrack = null;
+// Track user's session
+let userKey = null;
 
-// Function to start the microphone
-async function startAudio() {
-  try {
-    // Request access to the microphone
-    audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    audioTrack = audioStream.getAudioTracks()[0];
-    console.log("Microphone activated");
-  } catch (error) {
-    console.error("Error accessing microphone:", error);
-    alert("Microphone access is required for this feature to work.");
+// Listen for changes in the user count
+onValue(vcRef, (snapshot) => {
+  const data = snapshot.val();
+  const userCount = data ? Object.keys(data).length : 0; // Count users
+  userCountDisplay.textContent = userCount; // Update user count on the page
+});
+
+// Function to join VC
+function joinVC() {
+  if (!userKey) {
+    userKey = push(vcRef, { active: true }).key; // Add user to the database
+    console.log("Joined VC");
   }
 }
 
-// Function to stop the microphone
-function stopAudio() {
-  if (audioTrack) {
-    audioTrack.stop();
-    console.log("Microphone deactivated");
+// Function to leave VC
+function leaveVC() {
+  if (userKey) {
+    remove(ref(db, `voicechat/${userKey}`)); // Remove user from the database
+    userKey = null;
+    console.log("Left VC");
   }
 }
 
-// Add event listeners for push-to-talk functionality
+// Push-to-Talk button functionality
 pushToTalkButton.addEventListener("mousedown", () => {
-  startAudio();
+  joinVC(); // User joins VC when the button is pressed
 });
 
 pushToTalkButton.addEventListener("mouseup", () => {
-  stopAudio();
+  leaveVC(); // User leaves VC when the button is released
 });
 
 pushToTalkButton.addEventListener("mouseleave", () => {
-  stopAudio();
+  leaveVC(); // User leaves VC if the cursor leaves the button
 });
+
+// Leave VC when the page is closed or refreshed
+window.addEventListener("beforeunload", leaveVC);
