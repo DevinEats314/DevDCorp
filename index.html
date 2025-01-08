@@ -301,6 +301,7 @@
 
             // Set the logged-in username
             loggedInUsername = username;
+            loggedInNickname = nicknames[loggedInUsername]
 
             // Ensure the chat starts at the bottom on initial load
             setTimeout(scrollToBottom, 100);  // Small delay to allow the DOM to load
@@ -320,7 +321,7 @@
         if (messageText !== "") {
             const timestamp = new Date().toLocaleString();  // Get current timestamp
             const messageData = {
-                username: loggedInUsername,
+                username: loggedInNickname,
                 message: messageText,
                 timestamp: timestamp
             };
