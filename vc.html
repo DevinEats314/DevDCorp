@@ -3,37 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voice Chat</title>
-  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"></script>
+  <title>Simple Voice Chat</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      margin-top: 50px;
+      margin: 20px;
     }
-    #pushToTalk {
-      padding: 15px 30px;
-      font-size: 18px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
     }
-    #pushToTalk:hover {
-      background-color: #0056b3;
-    }
-    .user-count {
-      font-size: 20px;
-      margin-top: 20px;
+    input {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>Voice Chat</h1>
-  <p>Press and hold the button below to enable your microphone:</p>
-  <button id="pushToTalk">Hold to Talk</button>
-  <script src="voicechat.js" type="module"></script>
+  <h1>Simple Voice Chat</h1>
+  <p>Share the room ID with a friend to start chatting!</p>
+  <input id="roomId" type="text" placeholder="Enter Room ID" />
+  <button id="joinRoom">Join Room</button>
+  <p id="status">Status: Disconnected</p>
+
+  <script>
+    const roomIdInput = document.getElementById('roomId');
+    const joinButton = document.getElementById('joinRoom');
+    const status = document.getElementById('status');
+
+    let localStream;
+    let peerConnection;
+    const servers = {
+      iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' } // STUN server for NAT traversal
+      ]
+    };
+
+    // Signaling server (mocked for simplicity)
+    const signalingServer = {
+      listeners: [],
+      send: (message) => signalingServer.listeners.forEach((callback) => callback(message)),
+      onMessage: (callback) => signalingServer.listeners.push(callback),
+    };
+
+    // Capture audio from the user's microphone
+    async function getAudioStream() {
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log('Audio stream captured');
+      } catch (error) {
+        console.error('Error accessing microphone:', error);
+      }
+    }
+
+    // Handle signaling messages
+    signalingServer.onMessage(async (message) => {
+      if (!peerConnection) createPeerConnection();
+
+      if (message.offer) {
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer));
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+        signalingServer.send({ answer });
+      } else if (message.answer) {
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(message.answer));
+      } else if (message.candidate) {
+        await peerConnection.addIceCandidate(new RTCIceCandidate(message.candidate));
+      }
+    });
+
+    // Create a new peer connection
+    function createPeerConnection() {
+      peerConnection = new RTCPeerConnection(servers);
+
+      peerConnection.onicecandidate = (event) => {
+        if (event.candidate) {
+          signalingServer.send({ candidate: event.candidate });
+        }
+      };
+
+      peerConnection.ontrack = (event) => {
+        const audioElement = document.createElement('audio');
+        audioElement.srcObject = event.streams[0];
+        audioElement.autoplay = true;
+        document.body.appendChild(audioElement);
+      };
+
+      localStream.getTracks().forEach((track) => {
+        peerConnection.addTrack(track, localStream);
+      });
+    }
+
+    // Join a room and establish a connection
+    joinButton.addEventListener('click', async () => {
+      const roomId = roomIdInput.value.trim();
+      if (!roomId) {
+        alert('Please enter a room ID');
+        return;
+      }
+
+      status.textContent = `Status: Connecting to room ${roomId}...`;
+
+      await getAudioStream();
+      createPeerConnection();
+
+      const offer = await peerConnection.createOffer();
+      await peerConnection.setLocalDescription(offer);
+
+      signalingServer.send({ roomId, offer });
+      status.textContent = `Status: Connected to room ${roomId}`;
+    });
+  </script>
 </body>
 </html>
