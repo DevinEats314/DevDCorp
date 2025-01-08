@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voice Chat</title>
+  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -22,12 +24,17 @@
     #pushToTalk:hover {
       background-color: #0056b3;
     }
+    .user-count {
+      font-size: 20px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
   <h1>Voice Chat</h1>
   <p>Press and hold the button below to enable your microphone:</p>
   <button id="pushToTalk">Hold to Talk</button>
-  <script src="voicechat.js"></script>
+  <p class="user-count">Users in VC: <span id="userCount">0</span></p>
+  <script src="voicechat.js" type="module"></script>
 </body>
 </html>
