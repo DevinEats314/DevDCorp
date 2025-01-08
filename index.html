@@ -226,6 +226,8 @@
                 <button onclick="openPong()">Play Pong!</button>
                 <button onclick="openMario()">Play Mario!</button>
                 <button onclick="openWindowkill()">Play Windowkill!</button>
+                <button onclick="open2048()">Play 2048!</button>
+                <button onclick="openCookieclicker()">Play Cookie Clicker!</button>
             </div>
         </div>
 
@@ -414,6 +416,32 @@
     function openWindowkill() {
         var win = window.open()
         var url = "windowkill.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function open2048() {
+        var win = window.open()
+        var url = "2048/2048.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function openCookieclicker() {
+        var win = window.open()
+        var url = "CookieClicker/cookieclicker.html"
         if (url) {
         var iframe = document.createElement("iframe")
         iframe.style.border = "none";
