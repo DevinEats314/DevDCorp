@@ -3,119 +3,211 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Voice Chat</title>
+  <title>Audio Recording and Sharing</title>
+  
+  <!-- Use type="module" for Firebase SDKs -->
+  <script type="module">
+    // Firebase config and initialization (inside the module)
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js';
+    import { getDatabase, ref, set, remove, onChildAdded } from 'https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js';
+    import { getStorage } from 'https://www.gstatic.com/firebasejs/9.0.2/firebase-storage.js';
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBi0ofcvlq9W2MmZ-D2EzqalqgzknfJAGk",
+      authDomain: "groupchat-5a13b.firebaseapp.com",
+      databaseURL: "https://groupchat-5a13b-default-rtdb.firebaseio.com",
+      projectId: "groupchat-5a13b",
+      storageBucket: "groupchat-5a13b.firebasestorage.app",
+      messagingSenderId: "223221913801",
+      appId: "1:223221913801:web:7e651c2dcc436608bd1518",
+      measurementId: "G-SHC0GXX7MH"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    let mediaRecorder;
+    let audioChunks = [];
+
+    // Check if MediaRecorder is supported
+    if (!window.MediaRecorder) {
+      alert("Your browser does not support the MediaRecorder API.");
+    }
+
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', () => {
+      const startRecordingButton = document.getElementById('start-recording');
+      const audioPlayer = document.getElementById('audio-player');
+      
+      // Track if we are currently recording
+      let isRecording = false;
+
+      // Request microphone access as soon as the page loads
+      async function requestMicrophoneAccess() {
+        try {
+          console.log('Requesting microphone access...');
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          console.log('Microphone access granted');
+        } catch (err) {
+          console.error('Error requesting microphone access:', err);
+          alert('Microphone access is required to record audio.');
+        }
+      }
+
+      // Call the function to request microphone access immediately
+      requestMicrophoneAccess();
+
+      // Start recording on press and stop on release
+      startRecordingButton.addEventListener('mousedown', async () => {
+        if (isRecording) return;
+        isRecording = true;
+        try {
+          console.log('Starting recording...');
+          // Request microphone access if not already granted (optional)
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+          
+          // Gather audio data
+          mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+            console.log('Audio data available:', event.data);
+          };
+
+          // Once recording stops, convert to Base64 and upload to Firebase
+          mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const audioBase64 = reader.result.split(',')[1]; // Base64 encoded audio
+              console.log('Audio encoding complete:', audioBase64);
+              uploadAudioToFirebase(audioBase64);
+            };
+            reader.readAsDataURL(audioBlob);
+          };
+
+          // Start recording
+          mediaRecorder.start();
+          console.log('Recording started');
+          
+          // Change button text and style
+          startRecordingButton.textContent = 'Recording...';
+          startRecordingButton.style.backgroundColor = 'red';
+        } catch (err) {
+          console.error('Error starting recording:', err);
+          alert('Microphone access is required to record audio.');
+        }
+      });
+
+      // Stop recording on mouseup
+      startRecordingButton.addEventListener('mouseup', () => {
+        if (!isRecording) return;
+        mediaRecorder.stop();
+        console.log('Recording stopped');
+        isRecording = false;
+        
+        // Change button text and style
+        startRecordingButton.textContent = 'Start Recording';
+        startRecordingButton.style.backgroundColor = '';
+      });
+
+      // Stop recording on mouseout (if the user releases the button outside)
+      startRecordingButton.addEventListener('mouseout', () => {
+        if (isRecording) {
+          mediaRecorder.stop();
+          console.log('Recording stopped');
+          isRecording = false;
+          
+          // Change button text and style
+          startRecordingButton.textContent = 'Start Recording';
+          startRecordingButton.style.backgroundColor = '';
+        }
+      });
+
+      // Function to upload audio to Firebase
+      function uploadAudioToFirebase(audioBase64) {
+        const audioRef = ref(database, 'audio/');
+        const newAudioRef = ref(database, 'audio/' + new Date().getTime()); // Use timestamp to ensure unique IDs
+        set(newAudioRef, { audioData: audioBase64 })
+          .then(() => {
+            console.log('Audio uploaded successfully');
+          })
+          .catch(error => {
+            console.error('Error uploading audio:', error);
+          });
+      }
+
+      // Fetch and play only the latest audio from Firebase
+      function fetchAndPlayAudio() {
+        const audioRef = ref(database, 'audio/');
+        onChildAdded(audioRef, (snapshot) => {
+          // Fetch the most recent audio
+          const audioBase64 = snapshot.val().audioData;
+          const audioBlob = new Blob([new Uint8Array(atob(audioBase64).split("").map(char => char.charCodeAt(0)))], { type: 'audio/wav' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          
+          // Only play the latest audio uploaded
+          audioPlayer.src = audioUrl;
+          audioPlayer.play(); // Automatically play the audio
+
+          // Remove the controls (no need for user input to start playback)
+          audioPlayer.removeAttribute('controls'); 
+
+          // Once the audio finishes playing, delete it from Firebase to save space
+          audioPlayer.onended = () => {
+            console.log('Audio playback finished');
+            deleteAudioFromFirebase(snapshot.key); // Remove the audio from Firebase
+          };
+        });
+      }
+
+      // Function to delete audio from Firebase after it has been played
+      function deleteAudioFromFirebase(audioKey) {
+        const audioRef = ref(database, 'audio/' + audioKey);
+        remove(audioRef)
+          .then(() => {
+            console.log('Audio deleted from Firebase');
+          })
+          .catch((error) => {
+            console.error('Error deleting audio:', error);
+          });
+      }
+
+      // Initialize by fetching the latest audio and playing it automatically
+      fetchAndPlayAudio();
+    });
+  </script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      margin: 20px;
+      padding: 50px;
+    }
+    #audio-controls {
+      margin-bottom: 20px;
     }
     button {
       padding: 10px 20px;
       font-size: 16px;
-      margin: 10px;
+      cursor: pointer;
     }
-    input {
-      padding: 10px;
-      font-size: 16px;
-      margin: 10px;
+    button:disabled {
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <h1>Simple Voice Chat</h1>
-  <p>Share the room ID with a friend to start chatting!</p>
-  <input id="roomId" type="text" placeholder="Enter Room ID" />
-  <button id="joinRoom">Join Room</button>
-  <p id="status">Status: Disconnected</p>
 
-  <script>
-    const roomIdInput = document.getElementById('roomId');
-    const joinButton = document.getElementById('joinRoom');
-    const status = document.getElementById('status');
+<h1>Voice Chat</h1> 
+<p>Allow microphone access to hear and record audio</p>
+<p>Whenever someone records anyone on the vc will hear instantly</p>
+<div id="audio-controls">
+  <button id="start-recording">Start Recording</button>
+</div>
+<audio id="audio-player"></audio>
 
-    let localStream;
-    let peerConnection;
-    const servers = {
-      iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' } // STUN server for NAT traversal
-      ]
-    };
-
-    // Signaling server (mocked for simplicity)
-    const signalingServer = {
-      listeners: [],
-      send: (message) => signalingServer.listeners.forEach((callback) => callback(message)),
-      onMessage: (callback) => signalingServer.listeners.push(callback),
-    };
-
-    // Capture audio from the user's microphone
-    async function getAudioStream() {
-      try {
-        localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        console.log('Audio stream captured');
-      } catch (error) {
-        console.error('Error accessing microphone:', error);
-      }
-    }
-
-    // Handle signaling messages
-    signalingServer.onMessage(async (message) => {
-      if (!peerConnection) createPeerConnection();
-
-      if (message.offer) {
-        await peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer));
-        const answer = await peerConnection.createAnswer();
-        await peerConnection.setLocalDescription(answer);
-        signalingServer.send({ answer });
-      } else if (message.answer) {
-        await peerConnection.setRemoteDescription(new RTCSessionDescription(message.answer));
-      } else if (message.candidate) {
-        await peerConnection.addIceCandidate(new RTCIceCandidate(message.candidate));
-      }
-    });
-
-    // Create a new peer connection
-    function createPeerConnection() {
-      peerConnection = new RTCPeerConnection(servers);
-
-      peerConnection.onicecandidate = (event) => {
-        if (event.candidate) {
-          signalingServer.send({ candidate: event.candidate });
-        }
-      };
-
-      peerConnection.ontrack = (event) => {
-        const audioElement = document.createElement('audio');
-        audioElement.srcObject = event.streams[0];
-        audioElement.autoplay = true;
-        document.body.appendChild(audioElement);
-      };
-
-      localStream.getTracks().forEach((track) => {
-        peerConnection.addTrack(track, localStream);
-      });
-    }
-
-    // Join a room and establish a connection
-    joinButton.addEventListener('click', async () => {
-      const roomId = roomIdInput.value.trim();
-      if (!roomId) {
-        alert('Please enter a room ID');
-        return;
-      }
-
-      status.textContent = `Status: Connecting to room ${roomId}...`;
-
-      await getAudioStream();
-      createPeerConnection();
-
-      const offer = await peerConnection.createOffer();
-      await peerConnection.setLocalDescription(offer);
-
-      signalingServer.send({ roomId, offer });
-      status.textContent = `Status: Connected to room ${roomId}`;
-    });
-  </script>
 </body>
 </html>
