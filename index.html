@@ -6,17 +6,6 @@
     <title>DevinDaboiCorp</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
-        /* Default light mode (green buttons, white background) */
-        /* Default light mode (black text in the group chat) */
-body.light-mode .chat-message {
-    color: black;
-}
-
-/* Dark mode (white text in the group chat) */
-body.dark-mode .chat-message {
-    color: black;
-}
-
 body.light-mode {
     background-color: #f4f4f4;
     color: black;
@@ -100,7 +89,13 @@ body.dark-mode .game-buttons button {
             flex-direction: column;
         }
 
-        .message {
+        body.dark-mode .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #000000;
+            border-radius: 5px;
+        }
+        body.light-mode .message {
             margin-bottom: 10px;
             padding: 10px;
             background-color: #e0e0e0;
