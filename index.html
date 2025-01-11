@@ -216,6 +216,7 @@
                 <h1>Other Features</h1>
                 <button onclick="openMovies()">Go to Movies Page</button>
                 <button onclick="openVC()">Voice Chat (working)</button>
+                <button onclick="openCL()">DevDCorp Change Log</button>
             </div>
 
         </div>
@@ -490,6 +491,19 @@
     function openVC() {
         var win = window.open()
         var url = "vc.html"
+        if (url) {
+        var iframe = document.createElement("iframe")
+        iframe.style.border = "none";
+        iframe.style.width = "100%";
+        iframe.style.height = "100%"
+        iframe.style.margin = "0";
+        iframe.src = url;
+        win.document.body.appendChild(iframe);
+        }
+    }
+    function openCL() {
+        var win = window.open()
+        var url = "changelog.html"
         if (url) {
         var iframe = document.createElement("iframe")
         iframe.style.border = "none";
