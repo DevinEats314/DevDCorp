@@ -543,6 +543,12 @@ document.onkeydown = function(e) {
         e.preventDefault(); 
     } 
 }; 
+<script> 
+document.onkeydown = function(e) { 
+    if (e.ctrlKey && e.key === 'U') { 
+        e.preventDefault(); 
+    } 
+}; 
 </script> 
 </body>
 </html>
