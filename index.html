@@ -525,27 +525,7 @@ document.addEventListener('contextmenu', function(e) {
 </script> 
 <script> 
 document.onkeydown = function(e) { 
-    if (e.key === 'F12') { 
-        e.preventDefault(); 
-    } 
-}; 
-</script> 
-    <script> 
-document.onkeydown = function(e) { 
-    if (e.ctrlKey && e.shiftKey && e.key === 'I') { 
-        e.preventDefault(); 
-    } 
-}; 
-</script> 
-    <script> 
-document.onkeydown = function(e) { 
-    if ((e.ctrlKey && e.shiftKey && e.key === 'C') || (e.ctrlKey && e.shiftKey && e.key === 'J')) { 
-        e.preventDefault(); 
-    } 
-}; 
-<script> 
-document.onkeydown = function(e) { 
-    if (e.ctrlKey && e.key === 'U') { 
+    if ((e.key === 'F12') || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.shiftKey && e.key === 'C') || (e.ctrlKey && e.shiftKey && e.key === 'J') || (e.ctrlKey && e.key === 'U')) { 
         e.preventDefault(); 
     } 
 }; 
