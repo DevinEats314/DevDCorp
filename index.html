@@ -397,7 +397,7 @@ body.dark-mode .game-buttons button {
         const messageData = snapshot.val();
         const messageElement = document.createElement('div');
         messageElement.classList.add('message');
-        messageElement.innerHTML = `<strong>${messageData.username}</strong>: ${messageData.message} <span style="font-size: 0.8em; color: gray;">(${messageData.timestamp})</span>`;
+        messageElement.innerHTML = `<strong>${messageData.username}</strong>: ${messageData.message} <span style="font-size: 0.8em; color: white;">(${messageData.timestamp})</span>`;
         messagesDiv.appendChild(messageElement);
         scrollToBottom();  // Scroll to the bottom whenever a new message is added
     });
